@@ -1,0 +1,65 @@
+package com.computerwizards.android.round.ui
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.computerwizards.android.round.adapters.ServiceAdapter
+import com.computerwizards.android.round.databinding.ListFragmentBinding
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import dagger.android.support.DaggerFragment
+
+abstract class ListFragment : DaggerFragment() {
+
+    abstract val viewModel: HomeViewModel
+
+    var firestore: FirebaseFirestore = Firebase.firestore
+
+    private lateinit var recyclerView: RecyclerView
+
+    lateinit var adapter: ServiceAdapter
+
+    abstract var query: Query
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val binding = ListFragmentBinding.inflate(
+            inflater,
+            container,
+            false
+        )
+
+        recyclerView = binding.recyclerView
+
+        return binding.root
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        adapter = object : ServiceAdapter(query, viewModel) {}
+
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.adapter = adapter
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        adapter.startListening()
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        adapter.stopListening()
+    }
+}

@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Round</string>
+    <string name="service">Service clicked</string>
+</resources>
