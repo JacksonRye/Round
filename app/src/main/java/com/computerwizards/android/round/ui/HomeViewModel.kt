@@ -1,11 +1,9 @@
 package com.computerwizards.android.round.ui
 
-import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.computerwizards.android.round.Event
-import com.computerwizards.android.round.R
 import com.computerwizards.android.round.model.Service
 import com.computerwizards.android.round.model.User
 import com.firebase.ui.auth.AuthUI
@@ -29,8 +27,8 @@ class HomeViewModel @Inject constructor(private val firestore: FirebaseFirestore
 
 //    val servicesRef: Query = firestore.collection("services")
 
-    private val _snackbarText = MutableLiveData<Event<Int>>()
-    val snackbarMessage: LiveData<Event<Int>> = _snackbarText
+    private val _snackbarText = MutableLiveData<Event<String>>()
+    val snackbarMessage: LiveData<Event<String>> = _snackbarText
 
     fun createNewUser() {
         val firebaseUser = FirebaseAuth.getInstance().currentUser
@@ -52,10 +50,10 @@ class HomeViewModel @Inject constructor(private val firestore: FirebaseFirestore
 
     fun openService(service: Service) {
         _openServiceEvent.value = Event(service)
-        showSnackbarMessage(R.string.service)
+//        showSnackbarMessage("Service: ${service.name} clicked")
     }
 
-    private fun showSnackbarMessage(@StringRes message: Int) {
+    private fun showSnackbarMessage(message: String) {
         _snackbarText.value = Event(message)
     }
 

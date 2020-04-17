@@ -3,12 +3,12 @@ package com.computerwizards.android.round.ui
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.computerwizards.android.round.EventObserver
 import com.computerwizards.android.round.R
-import com.computerwizards.android.round.utils.setupSnackbar
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.snackbar.Snackbar
@@ -51,13 +51,16 @@ class HomeFragment : ListFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        view?.setupSnackbar(this, viewModel.snackbarMessage, Snackbar.LENGTH_SHORT)
         setupNavigation()
     }
 
     private fun setupNavigation() {
         viewModel.openServiceEvent.observe(viewLifecycleOwner, EventObserver {
-            viewModel.openService(it)
+            Log.d(TAG, "setupNav: $it")
+            Snackbar.make(
+                requireActivity().findViewById(android.R.id.content),
+                "Service: ${it.name} clicked", Snackbar.LENGTH_SHORT
+            ).show()
         })
     }
 
@@ -103,6 +106,7 @@ class HomeFragment : ListFragment() {
 
     companion object {
         private const val RC_SIGN_IN = 9001
+        private const val TAG = "HomeFragment"
     }
 
 

@@ -26,12 +26,14 @@ abstract class ListFragment : DaggerFragment() {
 
     abstract var query: Query
 
+    lateinit var binding: ListFragmentBinding
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = ListFragmentBinding.inflate(
+        binding = ListFragmentBinding.inflate(
             inflater,
             container,
             false
