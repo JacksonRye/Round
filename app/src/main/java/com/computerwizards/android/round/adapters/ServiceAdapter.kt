@@ -10,7 +10,7 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
 
 open class ServiceAdapter(query: Query, private val viewModel: HomeViewModel) :
-    FireAdapter<ServiceAdapter.ViewHolder>(query) {
+    FireAdapter<ServiceAdapter.ViewHolder>(query), ListAdapter {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)

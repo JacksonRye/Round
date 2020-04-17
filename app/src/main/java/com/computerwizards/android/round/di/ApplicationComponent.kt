@@ -15,7 +15,8 @@ import javax.inject.Singleton
         AndroidSupportInjectionModule::class,
         HomeModule::class,
         AddModule::class,
-        ListFragmentModule::class
+        ListFragmentModule::class,
+        ProvidersModule::class
     ]
 )
 interface ApplicationComponent : AndroidInjector<RoundApplication> {

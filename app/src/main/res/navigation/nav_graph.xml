@@ -9,7 +9,11 @@
         android:id="@+id/homeFragment"
         android:name="com.computerwizards.android.round.ui.HomeFragment"
         android:label="home_fragment"
-        tools:layout="@layout/home_fragment" />
+        tools:layout="@layout/home_fragment">
+        <action
+            android:id="@+id/showProviders"
+            app:destination="@id/providersFragment" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.computerwizards.android.round.ui.ProfileFragment"
@@ -19,4 +23,12 @@
         android:id="@+id/addFragment"
         android:name="com.computerwizards.android.round.ui.AddFragment"
         android:label="AddFragment" />
+    <fragment
+        android:id="@+id/providersFragment"
+        android:name="com.computerwizards.android.round.ui.ProvidersFragment"
+        android:label="ProvidersFragment">
+        <argument
+            android:name="serviceUid"
+            app:argType="string" />
+    </fragment>
 </navigation>

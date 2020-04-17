@@ -7,11 +7,13 @@ import android.util.Log
 import android.view.*
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.computerwizards.android.round.EventObserver
 import com.computerwizards.android.round.R
+import com.computerwizards.android.round.adapters.ListAdapter
+import com.computerwizards.android.round.adapters.ServiceAdapter
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.Query
 import javax.inject.Inject
@@ -25,11 +27,14 @@ class HomeFragment : ListFragment() {
 
     override var query: Query = firestore.collection("services")
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+
         setHasOptionsMenu(true)
         return super.onCreateView(inflater, container, savedInstanceState)
     }
@@ -51,16 +56,23 @@ class HomeFragment : ListFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        var adapter: ListAdapter = object : ServiceAdapter(query, viewModel) {}
+        this.adapter = adapter
+        recyclerView.adapter = adapter as ServiceAdapter
+
         setupNavigation()
     }
 
     private fun setupNavigation() {
         viewModel.openServiceEvent.observe(viewLifecycleOwner, EventObserver {
             Log.d(TAG, "setupNav: $it")
-            Snackbar.make(
-                requireActivity().findViewById(android.R.id.content),
-                "Service: ${it.name} clicked", Snackbar.LENGTH_SHORT
-            ).show()
+//            Snackbar.make(
+//                requireActivity().findViewById(android.R.id.content),
+//                "Service: ${it.name} clicked", Snackbar.LENGTH_SHORT
+//            ).show()
+            val action = HomeFragmentDirections.showProviders(it.uid!!)
+            findNavController().navigate(action)
         })
     }
 

@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.computerwizards.android.round.adapters.ServiceAdapter
+import com.computerwizards.android.round.adapters.ListAdapter
 import com.computerwizards.android.round.databinding.ListFragmentBinding
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -20,9 +20,9 @@ abstract class ListFragment : DaggerFragment() {
 
     var firestore: FirebaseFirestore = Firebase.firestore
 
-    private lateinit var recyclerView: RecyclerView
+    lateinit var recyclerView: RecyclerView
 
-    lateinit var adapter: ServiceAdapter
+    open lateinit var adapter: ListAdapter
 
     abstract var query: Query
 
@@ -47,10 +47,10 @@ abstract class ListFragment : DaggerFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        adapter = object : ServiceAdapter(query, viewModel) {}
+//        adapter = object : ServiceAdapter(query, viewModel) {}
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView.adapter = adapter
+//        recyclerView.adapter = adapter as ServiceAdapter
     }
 
     override fun onStart() {
