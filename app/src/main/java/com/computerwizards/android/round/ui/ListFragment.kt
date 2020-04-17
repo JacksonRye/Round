@@ -24,7 +24,7 @@ abstract class ListFragment : DaggerFragment() {
 
     open lateinit var adapter: ListAdapter
 
-    abstract var query: Query
+    open lateinit var query: Query
 
     lateinit var binding: ListFragmentBinding
 

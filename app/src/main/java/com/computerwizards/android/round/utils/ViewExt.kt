@@ -5,7 +5,6 @@ import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import com.computerwizards.android.round.Event
 import com.google.android.material.snackbar.Snackbar
 
 /**

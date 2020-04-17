@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.computerwizards.android.round.R
 
+// TODO: Create profile fragment, view to select what services you perform
+// inspiration from pinterest add contributors
 
 class ProfileFragment : Fragment() {
 

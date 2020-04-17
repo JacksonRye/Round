@@ -8,10 +8,9 @@ import android.view.*
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.computerwizards.android.round.EventObserver
 import com.computerwizards.android.round.R
-import com.computerwizards.android.round.adapters.ListAdapter
 import com.computerwizards.android.round.adapters.ServiceAdapter
+import com.computerwizards.android.round.utils.EventObserver
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
@@ -57,23 +56,23 @@ class HomeFragment : ListFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        var adapter: ListAdapter = object : ServiceAdapter(query, viewModel) {}
-        this.adapter = adapter
+        this.adapter = object : ServiceAdapter(query, viewModel) {}
         recyclerView.adapter = adapter as ServiceAdapter
 
         setupNavigation()
     }
 
     private fun setupNavigation() {
-        viewModel.openServiceEvent.observe(viewLifecycleOwner, EventObserver {
-            Log.d(TAG, "setupNav: $it")
+        viewModel.openServiceEvent.observe(viewLifecycleOwner,
+            EventObserver {
+                Log.d(TAG, "setupNav: $it")
 //            Snackbar.make(
 //                requireActivity().findViewById(android.R.id.content),
 //                "Service: ${it.name} clicked", Snackbar.LENGTH_SHORT
 //            ).show()
-            val action = HomeFragmentDirections.showProviders(it.uid!!)
-            findNavController().navigate(action)
-        })
+                val action = HomeFragmentDirections.showProviders(it.uid!!)
+                findNavController().navigate(action)
+            })
     }
 
 

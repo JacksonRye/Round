@@ -3,9 +3,9 @@ package com.computerwizards.android.round.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.computerwizards.android.round.Event
 import com.computerwizards.android.round.model.Service
 import com.computerwizards.android.round.model.User
+import com.computerwizards.android.round.utils.Event
 import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
@@ -23,7 +23,8 @@ class HomeViewModel @Inject constructor(private val firestore: FirebaseFirestore
         AuthUI.IdpConfig.EmailBuilder().build()
     )
 
-    private val usersRef = firestore.collection("users").document()
+    private val usersDocRef = firestore.collection("users").document()
+    val usersCollectionRef = firestore.collection("users")
 
 //    val servicesRef: Query = firestore.collection("services")
 
@@ -33,7 +34,7 @@ class HomeViewModel @Inject constructor(private val firestore: FirebaseFirestore
     fun createNewUser() {
         val firebaseUser = FirebaseAuth.getInstance().currentUser
         if (firebaseUser != null) {
-            val user = User(firebaseUser).apply { uid = usersRef.id }
+            val user = User(firebaseUser).apply { uid = usersDocRef.id }
             createUser(user)
         }
     }
@@ -42,19 +43,21 @@ class HomeViewModel @Inject constructor(private val firestore: FirebaseFirestore
 
         return firestore.runTransaction { transaction ->
 
-            transaction.set(usersRef, user)
+            transaction.set(usersDocRef, user)
 
             null
         }
     }
 
     fun openService(service: Service) {
-        _openServiceEvent.value = Event(service)
+        _openServiceEvent.value =
+            Event(service)
 //        showSnackbarMessage("Service: ${service.name} clicked")
     }
 
     private fun showSnackbarMessage(message: String) {
-        _snackbarText.value = Event(message)
+        _snackbarText.value =
+            Event(message)
     }
 
 }
