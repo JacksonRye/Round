@@ -12,7 +12,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import javax.inject.Inject
 
-class HomeViewModel @Inject constructor(private val firestore: FirebaseFirestore) : ViewModel() {
+class HomeViewModel @Inject constructor(private val firestore: FirebaseFirestore) : ViewModel(),
+    Servicable {
 
     private val _openServiceEvent = MutableLiveData<Event<Service>>()
     val openServiceEvent: LiveData<Event<Service>> = _openServiceEvent
@@ -49,7 +50,7 @@ class HomeViewModel @Inject constructor(private val firestore: FirebaseFirestore
         }
     }
 
-    fun openService(service: Service) {
+    override fun openService(service: Service) {
         _openServiceEvent.value =
             Event(service)
 //        showSnackbarMessage("Service: ${service.name} clicked")

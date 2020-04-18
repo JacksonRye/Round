@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.computerwizards.android.round.ui.HomeViewModel" />
+            type="com.computerwizards.android.round.ui.Servicable" />
 
         <variable
             name="service"

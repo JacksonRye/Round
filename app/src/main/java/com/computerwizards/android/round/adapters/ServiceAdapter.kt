@@ -5,11 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.computerwizards.android.round.databinding.ItemServiceBinding
 import com.computerwizards.android.round.model.Service
-import com.computerwizards.android.round.ui.HomeViewModel
+import com.computerwizards.android.round.ui.Servicable
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
 
-open class ServiceAdapter(query: Query, private val viewModel: HomeViewModel) :
+open class ServiceAdapter(query: Query, private val viewModel: Servicable) :
     FireAdapter<ServiceAdapter.ViewHolder>(query), ListAdapter {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -28,7 +28,7 @@ open class ServiceAdapter(query: Query, private val viewModel: HomeViewModel) :
         RecyclerView.ViewHolder(binding.root) {
 
 
-        fun bind(service: Service, viewModel: HomeViewModel) {
+        fun bind(service: Service, viewModel: Servicable) {
 
             binding.viewModel = viewModel
             binding.service = service

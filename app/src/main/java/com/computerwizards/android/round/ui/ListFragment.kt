@@ -1,9 +1,7 @@
 package com.computerwizards.android.round.ui
 
-import android.os.Bundle
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModel
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.computerwizards.android.round.adapters.ListAdapter
 import com.google.firebase.firestore.FirebaseFirestore
@@ -25,31 +23,6 @@ abstract class ListFragment : DaggerFragment() {
     open lateinit var query: Query
 
     open lateinit var binding: ViewDataBinding
-
-//    override fun onCreateView(
-//        inflater: LayoutInflater,
-//        container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ): View? {
-////        binding = ListFragmentBinding.inflate(
-////            inflater,
-////            container,
-////            false
-////        )
-////
-////        return binding.root
-//        return super.onCreateView(inflater, container, savedInstanceState)
-//    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-
-//        recyclerView = binding.recyclerView
-
-
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-    }
 
     override fun onStart() {
         super.onStart()

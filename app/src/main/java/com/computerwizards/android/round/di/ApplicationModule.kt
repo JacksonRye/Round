@@ -1,8 +1,7 @@
 package com.computerwizards.android.round.di
 
-import android.util.Log
+import com.computerwizards.android.round.model.User
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -17,15 +16,12 @@ class ApplicationModule {
     @Provides
     fun provideFireStore(): FirebaseFirestore = Firebase.firestore
 
+
     @Singleton
     @Provides
-    fun provideCurrentUser(): FirebaseUser {
-        val currentUser = FirebaseAuth.getInstance().currentUser
-        if (currentUser == null) {
-            Log.e("ApplicationModule", "provideCurrentUser:$currentUser")
-            throw IllegalStateException("User not authenticated but trying to access profile")
-        }
-        return currentUser
-    }
+    fun provideUser(): User? {
+        val fireUser = FirebaseAuth.getInstance().currentUser ?: return null
 
+        return User(fireUser)
+    }
 }
