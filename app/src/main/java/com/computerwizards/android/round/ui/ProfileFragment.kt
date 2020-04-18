@@ -1,36 +1,17 @@
 package com.computerwizards.android.round.ui
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
-import com.computerwizards.android.round.R
 
 // TODO: Create profile fragment, view to select what services you perform
 // inspiration from pinterest add contributors
 
 class ProfileFragment : Fragment() {
 
-    companion object {
-        fun newInstance() =
-            ProfileFragment()
-    }
+//    @Inject
+//    lateinit var viewMOdelFactory: ViewModelProvider.Factory
+//
+//    override val viewModel: ViewModel
 
-    private lateinit var viewModel: ProfileViewModel
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.profile_fragment, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(ProfileViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
 
 }

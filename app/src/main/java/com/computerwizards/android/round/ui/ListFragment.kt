@@ -1,13 +1,11 @@
 package com.computerwizards.android.round.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.computerwizards.android.round.adapters.ListAdapter
-import com.computerwizards.android.round.databinding.ListFragmentBinding
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
@@ -16,41 +14,41 @@ import dagger.android.support.DaggerFragment
 
 abstract class ListFragment : DaggerFragment() {
 
-    abstract val viewModel: HomeViewModel
+    abstract val viewModel: ViewModel
 
     var firestore: FirebaseFirestore = Firebase.firestore
 
-    lateinit var recyclerView: RecyclerView
+    open lateinit var recyclerView: RecyclerView
 
     open lateinit var adapter: ListAdapter
 
     open lateinit var query: Query
 
-    lateinit var binding: ListFragmentBinding
+    open lateinit var binding: ViewDataBinding
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        binding = ListFragmentBinding.inflate(
-            inflater,
-            container,
-            false
-        )
-
-        recyclerView = binding.recyclerView
-
-        return binding.root
-    }
+//    override fun onCreateView(
+//        inflater: LayoutInflater,
+//        container: ViewGroup?,
+//        savedInstanceState: Bundle?
+//    ): View? {
+////        binding = ListFragmentBinding.inflate(
+////            inflater,
+////            container,
+////            false
+////        )
+////
+////        return binding.root
+//        return super.onCreateView(inflater, container, savedInstanceState)
+//    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-//        adapter = object : ServiceAdapter(query, viewModel) {}
+
+//        recyclerView = binding.recyclerView
+
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-//        recyclerView.adapter = adapter as ServiceAdapter
     }
 
     override fun onStart() {

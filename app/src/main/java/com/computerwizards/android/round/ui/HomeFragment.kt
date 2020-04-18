@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.computerwizards.android.round.R
 import com.computerwizards.android.round.adapters.ServiceAdapter
+import com.computerwizards.android.round.databinding.ListFragmentBinding
 import com.computerwizards.android.round.utils.EventObserver
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
@@ -33,10 +34,20 @@ class HomeFragment : ListFragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        val binding = ListFragmentBinding.inflate(
+            inflater,
+            container,
+            false
+        )
 
-        setHasOptionsMenu(true)
-        return super.onCreateView(inflater, container, savedInstanceState)
+        this.binding = binding
+
+        this.recyclerView = binding.recyclerView
+
+        return binding.root
+
     }
+
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.home_menu, menu)
