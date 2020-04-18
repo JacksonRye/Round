@@ -42,12 +42,12 @@ class ProvidersFragment : ListFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        this.query = firestore.collection("services")
+        query = firestore.collection("services")
             .document(args.serviceUid).collection("providers")
 
 
-        this.adapter = object : ProvidersAdapter(query, viewModel) {}
-        recyclerView.adapter = this.adapter as ProvidersAdapter
+        adapter = object : ProvidersAdapter(query, viewModel) {}
+        recyclerView.adapter = adapter as ProvidersAdapter
     }
 
     companion object {
