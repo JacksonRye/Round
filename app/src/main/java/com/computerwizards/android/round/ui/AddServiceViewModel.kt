@@ -1,5 +1,6 @@
 package com.computerwizards.android.round.ui
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,6 +18,11 @@ class AddServiceViewModel @Inject constructor(
 
 
 //    val selectedServiceRef = firestore.collection("services").document()
+
+    init {
+        Log.d(TAG, "$user")
+    }
+
 
     val allServicesQuery =
         firestore.collection("services")
@@ -53,4 +59,9 @@ class AddServiceViewModel @Inject constructor(
     fun closeDialog() {
         _closeServiceEvent.value = Event(Unit)
     }
+
+    companion object {
+        private const val TAG = "AddServiceViewModel"
+    }
+
 }

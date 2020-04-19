@@ -9,6 +9,7 @@ import com.computerwizards.android.round.utils.Event
 import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import javax.inject.Inject
 
@@ -24,10 +25,7 @@ class HomeViewModel @Inject constructor(private val firestore: FirebaseFirestore
         AuthUI.IdpConfig.EmailBuilder().build()
     )
 
-    private val usersDocRef = firestore.collection("users").document()
-    val usersCollectionRef = firestore.collection("users")
-
-//    val servicesRef: Query = firestore.collection("services")
+    private lateinit var usersDocRef: DocumentReference
 
     private val _snackbarText = MutableLiveData<Event<String>>()
     val snackbarMessage: LiveData<Event<String>> = _snackbarText
@@ -35,7 +33,9 @@ class HomeViewModel @Inject constructor(private val firestore: FirebaseFirestore
     fun createNewUser() {
         val firebaseUser = FirebaseAuth.getInstance().currentUser
         if (firebaseUser != null) {
-            val user = User(firebaseUser).apply { uid = usersDocRef.id }
+            val user = User(firebaseUser)
+            usersDocRef = firestore.collection("users").document(user.uid!!)
+
             createUser(user)
         }
     }

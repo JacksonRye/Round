@@ -5,8 +5,7 @@ import com.google.firebase.auth.FirebaseUser
 data class User(
     var uid: String? = "",
     var displayName: String? = "",
-    var email: String? = "",
-    var services: List<Service>? = emptyList()
+    var email: String? = ""
 ) {
 
     constructor(user: FirebaseUser) : this(
