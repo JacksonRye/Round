@@ -25,30 +25,23 @@ class ProfileViewModel @Inject constructor(val firestore: FirebaseFirestore, val
     private val _openAddServiceEvent = MutableLiveData<Event<Unit>>()
     val openAddServiceEvent: LiveData<Event<Unit>> = _openAddServiceEvent
 
-    private val _closeServiceEvent = MutableLiveData<Event<Unit>>()
-    val closeServiceEvent: LiveData<Event<Unit>> = _closeServiceEvent
-
 
     //    Test Query
+//    val myServicesQuery: Query =
+//        firestore.collection("users").document("1HbhZTiDUpgZBcVjY8D1").collection("services")
+
     val myServicesQuery: Query =
-        firestore.collection("users").document("1HbhZTiDUpgZBcVjY8D1").collection("services")
-
-//    val myServicesQuery: Query = firestore.collection("users").document(user?.uid!!).collection("services")'
-
-    val allServicesQuery =
-        firestore.collection("services")
+        firestore.collection("users").document(user?.uid!!).collection("services")
 
 
-    override fun openService(service: Service) {}
+    override fun openService(service: Service) {
+    }
 
     fun openServicesDialog() {
         Log.d(TAG, "viewmodel:openServicesDialog() called")
         _openAddServiceEvent.value = Event(Unit)
     }
 
-    fun closeDialog() {
-        _closeServiceEvent.value = Event(Unit)
-    }
 
     companion object {
         private const val TAG = "ProfileViewMode"

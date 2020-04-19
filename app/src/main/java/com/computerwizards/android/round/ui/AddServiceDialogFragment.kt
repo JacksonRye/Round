@@ -21,7 +21,7 @@ class AddServiceDialogFragment : BottomSheetDialogFragment() {
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    private val viewModel by viewModels<ProfileViewModel> { viewModelFactory }
+    private val viewModel by viewModels<AddServiceViewModel> { viewModelFactory }
 
     lateinit var query: Query
 

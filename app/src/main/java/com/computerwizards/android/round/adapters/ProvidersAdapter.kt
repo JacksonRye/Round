@@ -1,11 +1,9 @@
 package com.computerwizards.android.round.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.computerwizards.android.round.databinding.ItemUserBinding
-import com.computerwizards.android.round.model.Provider
 import com.computerwizards.android.round.model.User
 import com.computerwizards.android.round.ui.HomeViewModel
 import com.google.firebase.firestore.Query
@@ -19,22 +17,10 @@ open class ProvidersAdapter(query: Query, private val viewModel: HomeViewModel) 
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = getSnapshot(position).toObject<Provider>()
+        val item = getSnapshot(position).toObject<User>()
 
-        item?.let { provider ->
-            Log.d(TAG, "user: $provider")
-
-            viewModel.usersCollectionRef.document(provider.userUid!!)
-                .get().addOnSuccessListener { documentSnapshot ->
-                    val user = documentSnapshot.toObject<User>()
-
-                    if (user != null) {
-                        holder.bind(user, viewModel)
-                    }
-
-                }
-
-
+        item?.let { user ->
+            holder.bind(user, viewModel)
         }
 
     }

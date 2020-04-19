@@ -44,6 +44,8 @@ class HomeFragment : ListFragment() {
 
         this.recyclerView = binding.recyclerView
 
+        setHasOptionsMenu(true)
+
         return binding.root
 
     }

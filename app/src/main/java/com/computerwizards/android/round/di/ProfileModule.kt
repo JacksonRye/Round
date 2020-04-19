@@ -2,6 +2,7 @@ package com.computerwizards.android.round.di
 
 import androidx.lifecycle.ViewModel
 import com.computerwizards.android.round.ui.AddServiceDialogFragment
+import com.computerwizards.android.round.ui.AddServiceViewModel
 import com.computerwizards.android.round.ui.ProfileFragment
 import com.computerwizards.android.round.ui.ProfileViewModel
 import dagger.Binds
@@ -14,7 +15,11 @@ import dagger.multibindings.IntoMap
 )
 abstract class ProfileModule {
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(
+        modules = [
+            ViewModelBuilder::class
+        ]
+    )
     internal abstract fun profileFragment(): ProfileFragment
 
     @Binds
@@ -22,7 +27,25 @@ abstract class ProfileModule {
     @ViewModelKey(ProfileViewModel::class)
     abstract fun bindViewModel(viewModel: ProfileViewModel): ViewModel
 
-    @ContributesAndroidInjector
+
+}
+
+@Module
+abstract class AddServiceModule {
+
+    @ContributesAndroidInjector(
+        modules = [
+            ViewModelBuilder::class
+        ]
+    )
     internal abstract fun AddServiceDialogFragment(): AddServiceDialogFragment
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AddServiceViewModel::class)
+    abstract fun bindViewModel(viewModel: AddServiceViewModel): ViewModel
+
+
+
 
 }
