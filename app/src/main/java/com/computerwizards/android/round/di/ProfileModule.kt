@@ -1,10 +1,7 @@
 package com.computerwizards.android.round.di
 
 import androidx.lifecycle.ViewModel
-import com.computerwizards.android.round.ui.AddServiceDialogFragment
-import com.computerwizards.android.round.ui.AddServiceViewModel
-import com.computerwizards.android.round.ui.ProfileFragment
-import com.computerwizards.android.round.ui.ProfileViewModel
+import com.computerwizards.android.round.ui.*
 import dagger.Binds
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -45,7 +42,20 @@ abstract class AddServiceModule {
     @ViewModelKey(AddServiceViewModel::class)
     abstract fun bindViewModel(viewModel: AddServiceViewModel): ViewModel
 
+}
 
+@Module
+abstract class ServiceOptionsModule {
 
+    @ContributesAndroidInjector(
+        modules = [
+            ViewModelBuilder::class
+        ]
+    )
+    internal abstract fun serviceOptionsDialogFragment(): ServiceOptionsDialogFragment
 
+    @Binds
+    @IntoMap
+    @ViewModelKey(ServiceOptionsViewModel::class)
+    abstract fun bindViewModel(viewModel: ServiceOptionsViewModel): ViewModel
 }
