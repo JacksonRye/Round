@@ -8,24 +8,27 @@ import android.view.*
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import com.computerwizards.android.round.R
 import com.computerwizards.android.round.adapters.ServiceAdapter
-import com.computerwizards.android.round.databinding.ListFragmentBinding
+import com.computerwizards.android.round.databinding.HomeFragmentBinding
 import com.computerwizards.android.round.utils.EventObserver
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.Query
+import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
-class HomeFragment : ListFragment() {
+class HomeFragment : DaggerFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    override val viewModel by viewModels<HomeViewModel> { viewModelFactory }
+    val viewModel by viewModels<HomeViewModel> { viewModelFactory }
 
-    override var query: Query = firestore.collection("services")
+    lateinit var recyclerView: RecyclerView
+
+    lateinit var adapter: ServiceAdapter
 
 
     override fun onCreateView(
@@ -34,17 +37,18 @@ class HomeFragment : ListFragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val binding = ListFragmentBinding.inflate(
+        val binding = HomeFragmentBinding.inflate(
             inflater,
             container,
             false
         )
 
-        this.binding = binding
 
-        this.recyclerView = binding.recyclerView
+        recyclerView = binding.recyclerView
 
         setHasOptionsMenu(true)
+
+        (activity as MainActivity).setSupportActionBar(binding.homeToolbar)
 
         return binding.root
 
@@ -69,8 +73,9 @@ class HomeFragment : ListFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        this.adapter = object : ServiceAdapter(query, viewModel) {}
-        recyclerView.adapter = adapter as ServiceAdapter
+        val query = viewModel.serviceQuery
+        adapter = object : ServiceAdapter(query, viewModel) {}
+        recyclerView.adapter = adapter
 
         setupNavigation()
     }
@@ -79,10 +84,7 @@ class HomeFragment : ListFragment() {
         viewModel.openServiceEvent.observe(viewLifecycleOwner,
             EventObserver {
                 Log.d(TAG, "setupNav: $it")
-//            Snackbar.make(
-//                requireActivity().findViewById(android.R.id.content),
-//                "Service: ${it.name} clicked", Snackbar.LENGTH_SHORT
-//            ).show()
+
                 val action = HomeFragmentDirections.showProviders(it.uid!!)
                 findNavController().navigate(action)
             })
@@ -97,6 +99,13 @@ class HomeFragment : ListFragment() {
             startSignIn()
             return
         }
+
+        adapter.startListening()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        adapter.stopListening()
     }
 
     private fun shouldStartSignIn(): Boolean {

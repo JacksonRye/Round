@@ -11,11 +11,13 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(private val firestore: FirebaseFirestore) : ViewModel(),
     Servicable {
 
+    val serviceQuery: Query = firestore.collection("services")
     private val _openServiceEvent = MutableLiveData<Event<Service>>()
     val openServiceEvent: LiveData<Event<Service>> = _openServiceEvent
 
