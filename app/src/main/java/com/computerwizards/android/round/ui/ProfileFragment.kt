@@ -1,6 +1,8 @@
 package com.computerwizards.android.round.ui
 
+import android.content.Context
 import android.os.Bundle
+import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.computerwizards.android.round.adapters.ServiceAdapter
 import com.computerwizards.android.round.databinding.ProfileFragmentBinding
 import com.computerwizards.android.round.utils.EventObserver
+import com.google.android.material.appbar.AppBarLayout
 import javax.inject.Inject
 
 // TODO: Create profile fragment, view to select what services you perform
@@ -39,6 +42,8 @@ class ProfileFragment : ListFragment() {
 
         recyclerView = binding.recyclerView
 
+        binding.profileImageClicked = viewModel.profileImageClicked
+
 
         return binding.root
     }
@@ -48,6 +53,7 @@ class ProfileFragment : ListFragment() {
         query = viewModel.myServicesQuery
         adapter = object : ServiceAdapter(query, viewModel) {}
         recyclerView.adapter = adapter as ServiceAdapter
+        binding.lifecycleOwner = viewLifecycleOwner
         setupNavigation()
 
     }
@@ -69,4 +75,14 @@ class ProfileFragment : ListFragment() {
     }
 
 
+}
+
+
+class FixedAppBarLayoutBehaviour(context: Context, attrs: AttributeSet) :
+    AppBarLayout.Behavior(context, attrs) {
+    init {
+        setDragCallback(object : DragCallback() {
+            override fun canDrag(appBarLayout: AppBarLayout): Boolean = false
+        })
+    }
 }

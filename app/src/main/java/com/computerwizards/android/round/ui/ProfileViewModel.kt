@@ -42,6 +42,14 @@ class ProfileViewModel @Inject constructor(val firestore: FirebaseFirestore, val
         _openAddServiceEvent.value = Event(Unit)
     }
 
+    private val _profileImageClicked = MutableLiveData<Boolean>().apply { value = false }
+    val profileImageClicked: LiveData<Boolean> = _profileImageClicked
+
+
+    fun onProfileImageClicked() {
+        _profileImageClicked.value = !profileImageClicked.value!!
+    }
+
 
     companion object {
         private const val TAG = "ProfileViewMode"

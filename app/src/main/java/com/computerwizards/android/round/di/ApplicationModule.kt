@@ -17,7 +17,6 @@ class ApplicationModule {
     fun provideFireStore(): FirebaseFirestore = Firebase.firestore
 
 
-    @Singleton
     @Provides
     fun provideUser(): User? {
         val fireUser = FirebaseAuth.getInstance().currentUser ?: return null
