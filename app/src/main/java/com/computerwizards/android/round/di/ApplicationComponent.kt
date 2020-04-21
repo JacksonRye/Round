@@ -19,7 +19,8 @@ import javax.inject.Singleton
         ProvidersModule::class,
         ProfileModule::class,
         AddServiceModule::class,
-        ServiceOptionsModule::class
+        ServiceOptionsModule::class,
+        UserProfileModule::class
     ]
 )
 interface ApplicationComponent : AndroidInjector<RoundApplication> {

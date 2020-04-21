@@ -8,8 +8,8 @@
             type="com.computerwizards.android.round.ui.ServiceOptionsViewModel" />
 
         <variable
-            name="service"
-            type="com.computerwizards.android.round.model.Service" />
+            name="serviceId"
+            type="String" />
 
     </data>
 
@@ -25,7 +25,7 @@
             <com.google.android.material.button.MaterialButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.onDelete(service)}"
+                android:onClick="@{() -> viewModel.onDelete(serviceId)}"
                 android:text="Delete" />
 
             <com.google.android.material.button.MaterialButton

@@ -10,7 +10,6 @@ import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.computerwizards.android.round.databinding.ServiceOptionsBinding
-import com.computerwizards.android.round.model.Service
 import com.computerwizards.android.round.utils.EventObserver
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.android.support.AndroidSupportInjection
@@ -37,10 +36,10 @@ class ServiceOptionsDialogFragment : BottomSheetDialogFragment() {
 
         binding.viewModel = viewModel
 
-        val args = requireArguments().getParcelable<Service>("service")
+        val args = requireArguments().getString("service")
 
 
-        binding.service = args
+        binding.serviceId = args
 
         return binding.root
     }
@@ -63,7 +62,7 @@ class ServiceOptionsDialogFragment : BottomSheetDialogFragment() {
         })
         viewModel.deleteServiceEvent.observe(viewLifecycleOwner, EventObserver {
             val toast = Toast.makeText(
-                context, "${it.name} deleted from your service",
+                context, "Service deleted",
                 Toast.LENGTH_SHORT
             )
             toast.setGravity(Gravity.TOP, 0, 0)

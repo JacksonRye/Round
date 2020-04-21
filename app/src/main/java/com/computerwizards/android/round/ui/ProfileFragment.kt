@@ -65,9 +65,6 @@ class ProfileFragment : ListFragment() {
             Log.d(TAG, "observing openAddServiceEvent")
             addServiceDialogFragment.show(parentFragmentManager, "ProfileFragment")
         })
-//        viewModel.closeServiceEvent.observe(viewLifecycleOwner, EventObserver {
-//            addServiceDialogFragment.dismiss()
-//        })
     }
 
     companion object {

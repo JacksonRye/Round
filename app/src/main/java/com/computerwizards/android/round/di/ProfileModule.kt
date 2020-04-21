@@ -59,3 +59,20 @@ abstract class ServiceOptionsModule {
     @ViewModelKey(ServiceOptionsViewModel::class)
     abstract fun bindViewModel(viewModel: ServiceOptionsViewModel): ViewModel
 }
+
+@Module
+abstract class UserProfileModule {
+
+    @ContributesAndroidInjector(
+        modules = [
+            ViewModelBuilder::class
+        ]
+    )
+    internal abstract fun userProfileFragment(): UserProfileFragment
+
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(UserProfileViewModel::class)
+    abstract fun bindViewModel(viewModel: UserProfileViewModel): ViewModel
+}

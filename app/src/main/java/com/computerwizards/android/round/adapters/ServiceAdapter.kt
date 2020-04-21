@@ -48,7 +48,7 @@ open class ServiceAdapter(query: Query, private val viewModel: Servicable) :
 
                     val args = Bundle()
 
-                    args.putParcelable("service", service)
+                    args.putString("service", service.uid)
 
                     serviceOptionsDialogFragment.arguments = args
 

@@ -18,8 +18,12 @@ class HomeViewModel @Inject constructor(private val firestore: FirebaseFirestore
     Servicable {
 
     val serviceQuery: Query = firestore.collection("services")
+
     private val _openServiceEvent = MutableLiveData<Event<Service>>()
     val openServiceEvent: LiveData<Event<Service>> = _openServiceEvent
+
+    private val _userClickedEvent = MutableLiveData<Event<String>>()
+    val userClickedEvent: LiveData<Event<String>> = _userClickedEvent
 
     var isSigningIn: Boolean = false
 
@@ -50,6 +54,10 @@ class HomeViewModel @Inject constructor(private val firestore: FirebaseFirestore
 
             null
         }
+    }
+
+    fun onClicked(userId: String) {
+        _userClickedEvent.value = Event(userId)
     }
 
     override fun openService(service: Service) {

@@ -6,9 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.computerwizards.android.round.adapters.ProvidersAdapter
 import com.computerwizards.android.round.databinding.ListFragmentBinding
+import com.computerwizards.android.round.utils.EventObserver
 import javax.inject.Inject
 
 class ProvidersFragment : ListFragment() {
@@ -38,6 +40,13 @@ class ProvidersFragment : ListFragment() {
         return binding.root
     }
 
+    private fun setupNavigation() {
+        viewModel.userClickedEvent.observe(viewLifecycleOwner, EventObserver {
+            val action = ProvidersFragmentDirections.showUser(it)
+            findNavController().navigate(action)
+        })
+    }
+
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -48,6 +57,8 @@ class ProvidersFragment : ListFragment() {
 
         adapter = object : ProvidersAdapter(query, viewModel) {}
         recyclerView.adapter = adapter as ProvidersAdapter
+
+        setupNavigation()
     }
 
     companion object {
