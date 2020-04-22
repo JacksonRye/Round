@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
@@ -40,25 +41,23 @@ class UserProfileFragment : DaggerFragment() {
             inflater,
             container,
             false
-        )
+        ).apply {
 
-        recyclerView = binding.recyclerView
+            toolbar.setNavigationOnClickListener { view ->
+                view.findNavController().navigateUp()
+            }
 
+            lifecycleOwner = viewLifecycleOwner
+        }
 
         viewModel.getProfileUser(args.userUid)
-
-        binding.userProfile = viewModel.userProfile
+        viewModel.loggedInUserLikes(args.userUid)
 
         binding.viewModel = viewModel
 
-        binding.lifecycleOwner = viewLifecycleOwner
+        binding.userProfile = viewModel.userProfile
 
-
-        val mainActivity = activity as MainActivity
-
-        mainActivity.setSupportActionBar(binding.toolbar)
-
-        mainActivity.supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        recyclerView = binding.recyclerView
 
 
 

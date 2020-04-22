@@ -84,32 +84,31 @@
                     <com.google.android.material.button.MaterialButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Like"
-                        android:textColor="@android:color/black"
-                        app:backgroundTint="#FFFFFF"
+                        android:backgroundTint="@{viewModel.userLiked ? @android:color/white : @android:color/black}"
+                        android:onClick="@{() -> viewModel.addToLike(userProfile.uid)}"
+                        android:text="@{viewModel.howManyLikes.toString()}"
+                        android:textColor="@{viewModel.userLiked ? @android:color/black : @android:color/white}"
+
+                        app:layout_constraintTop_toBottomOf="@+id/textView2"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.498"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+                        tools:text="200" />
 
-                    <TextView
-                        android:id="@+id/textView3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView2"
-                        tools:text="200 likes" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-                <com.google.android.material.appbar.MaterialToolbar
+                <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    app:layout_collapseMode="pin" />
+                    android:background="@android:color/transparent"
+                    app:contentInsetStartWithNavigation="0dp"
+                    app:layout_collapseMode="pin"
+                    app:navigationIcon="@drawable/ic_back"
+                    app:titleTextColor="?attr/colorOnSurface" />
 
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -139,7 +138,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
                 app:spanCount="3" />
 
