@@ -7,7 +7,8 @@ data class User(
     var displayName: String? = "",
     var email: String? = "",
     var displayImageUrl: String? = "",
-    var about: String? = ""
+    var about: String? = "",
+    var instanceToken: String? = ""
 ) {
 
     constructor(user: FirebaseUser) : this(

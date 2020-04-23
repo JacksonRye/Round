@@ -12,6 +12,8 @@ import javax.inject.Singleton
 @Module
 class ApplicationModule {
 
+    lateinit var id: String
+
     @Singleton
     @Provides
     fun provideFireStore(): FirebaseFirestore = Firebase.firestore
@@ -22,5 +24,10 @@ class ApplicationModule {
         val fireUser = FirebaseAuth.getInstance().currentUser ?: return null
 
         return User(fireUser)
+    }
+
+
+    companion object {
+        private const val TAG = "ApplicationModule"
     }
 }
