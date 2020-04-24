@@ -34,11 +34,16 @@ class RoundMessagingService : FirebaseMessagingService() {
         remoteMessage.data.isNotEmpty().let {
             Log.d(TAG, "Message data payload: " + remoteMessage.data)
 
-            remoteMessage.data["name"]?.let { it1 ->
-                sendNotification(
-                    it1
-                )
+            when (remoteMessage.data["eventType"]) {
+                "follow" -> {
+                    remoteMessage.data["displayName"]?.let { userName ->
+                        val messageBody = "$userName likes your services."
+                        sendNotification(messageBody)
+                        Log.d(TAG, "notificationSent: $messageBody")
+                    }
+                }
             }
+
 
             if (true) {
                 scheduleJob()
