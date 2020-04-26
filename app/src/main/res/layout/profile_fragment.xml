@@ -13,11 +13,17 @@
 
         <import type="android.view.View" />
 
+        <import type="android.graphics.drawable.Drawable" />
+
         <import type="androidx.lifecycle.LiveData" />
 
         <variable
             name="profileImageClicked"
             type="LiveData&lt;Boolean>" />
+
+        <variable
+            name="imageRequestListener"
+            type="com.bumptech.glide.request.RequestListener&lt;Drawable>" />
 
 
     </data>
@@ -67,13 +73,37 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view"
+                android:id="@+id/services_recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:itemCount="10"
-                tools:listitem="@layout/item_service" />
+                tools:itemCount="2"
+                tools:listitem="@layout/item_service">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <Button
+                android:id="@+id/uploadButton"
+                android:layout_width="160dp"
+                android:layout_height="62dp"
+                android:text="upload" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/photo_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="3"
+                tools:itemCount="3" />
+
+            <ImageView
+                android:id="@+id/photoImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:imageRequestListener="@{imageRequestListener}"
+                app:storageRef="@{viewModel.photoRef}"
+                tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
 
         </LinearLayout>

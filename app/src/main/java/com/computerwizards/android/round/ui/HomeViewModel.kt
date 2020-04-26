@@ -15,9 +15,13 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.storage.FirebaseStorage
 import javax.inject.Inject
 
-class HomeViewModel @Inject constructor(private val firestore: FirebaseFirestore) : ViewModel(),
+class HomeViewModel @Inject constructor(
+    private val firestore: FirebaseFirestore,
+    private val storage: FirebaseStorage
+) : ViewModel(),
     Servicable {
 
 

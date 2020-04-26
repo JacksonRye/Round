@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Round</string>
     <string name="service">Service clicked</string>
+    <string name="progress_uploading">Uploading</string>
+    <string name="upload_failed">Upload failed</string>
+    <string name="upload_finished">Upload finished</string>
+    <string name="downloading">Downloading...</string>
 </resources>

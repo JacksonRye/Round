@@ -9,9 +9,13 @@ import com.computerwizards.android.round.model.User
 import com.computerwizards.android.round.utils.Event
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.storage.FirebaseStorage
 import javax.inject.Inject
 
-class ProfileViewModel @Inject constructor(val firestore: FirebaseFirestore, val user: User?) :
+class ProfileViewModel @Inject constructor(
+    val firestore: FirebaseFirestore, val user: User?,
+    val storage: FirebaseStorage
+) :
     ViewModel(),
     Servicable {
 
@@ -21,6 +25,8 @@ class ProfileViewModel @Inject constructor(val firestore: FirebaseFirestore, val
         }
         Log.d("ProfileViewModel", "${user}")
     }
+
+    val photoRef = storage.reference.child("photos/image:30561")
 
     private val _openAddServiceEvent = MutableLiveData<Event<Unit>>()
     val openAddServiceEvent: LiveData<Event<Unit>> = _openAddServiceEvent

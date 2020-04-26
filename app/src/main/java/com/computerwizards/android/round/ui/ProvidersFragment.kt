@@ -22,6 +22,7 @@ class ProvidersFragment : ListFragment() {
 
     private val args by navArgs<ProvidersFragmentArgs>()
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -35,7 +36,7 @@ class ProvidersFragment : ListFragment() {
 
         this.binding = binding
 
-        this.recyclerView = binding.recyclerView
+        servicesRecyclerView = binding.recyclerView
 
         return binding.root
     }
@@ -56,7 +57,7 @@ class ProvidersFragment : ListFragment() {
 
 
         adapter = object : ProvidersAdapter(query, viewModel) {}
-        recyclerView.adapter = adapter as ProvidersAdapter
+        servicesRecyclerView.adapter = adapter as ProvidersAdapter
 
         setupNavigation()
     }

@@ -16,7 +16,7 @@ abstract class ListFragment : DaggerFragment() {
 
     var firestore: FirebaseFirestore = Firebase.firestore
 
-    open lateinit var recyclerView: RecyclerView
+    open lateinit var servicesRecyclerView: RecyclerView
 
     open lateinit var adapter: ListAdapter
 
