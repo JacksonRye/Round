@@ -3,13 +3,16 @@ package com.computerwizards.android.round.ui
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import com.computerwizards.android.round.model.Service
 import com.computerwizards.android.round.model.User
+import com.computerwizards.android.round.model.WorkMedia
 import com.computerwizards.android.round.utils.Event
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import javax.inject.Inject
 
 class ProfileViewModel @Inject constructor(
@@ -24,9 +27,27 @@ class ProfileViewModel @Inject constructor(
             throw IllegalStateException("A null user should not access profile")
         }
         Log.d("ProfileViewModel", "${user}")
+
+        getPhotos()
     }
 
-    val photoRef = storage.reference.child("photos/image:30561")
+    private val _photoRefs = MutableLiveData<List<StorageReference>>()
+    val photoRefs: LiveData<List<WorkMedia>> = Transformations.map(_photoRefs) { storageRefs ->
+        val workMedia = mutableListOf<WorkMedia>()
+        for (ref in storageRefs) {
+            workMedia.add(WorkMedia(ref, user?.uid))
+        }
+        Log.d(TAG, "workMedia: $workMedia")
+        workMedia.toList()
+    }
+
+
+    private fun getPhotos() {
+        storage.reference.child("photos").listAll().addOnSuccessListener { listResult ->
+            Log.d(TAG, "Storage Refs: ${listResult.items}")
+            _photoRefs.value = listResult.items.toMutableList()
+        }
+    }
 
     private val _openAddServiceEvent = MutableLiveData<Event<Unit>>()
     val openAddServiceEvent: LiveData<Event<Unit>> = _openAddServiceEvent

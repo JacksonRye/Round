@@ -19,6 +19,7 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.computerwizards.android.round.R
+import com.computerwizards.android.round.adapters.MediaAdapter
 import com.computerwizards.android.round.adapters.ServiceAdapter
 import com.computerwizards.android.round.binding.FragmentDataBindingComponent
 import com.computerwizards.android.round.databinding.ProfileFragmentBinding
@@ -89,6 +90,8 @@ class ProfileFragment : ListFragment() {
 
         photoRecyclerView = binding.photoRecyclerView
 
+
+
         binding.uploadButton.setOnClickListener {
             (activity as MainActivity).launchCamera()
         }
@@ -102,9 +105,15 @@ class ProfileFragment : ListFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
         query = viewModel.myServicesQuery
+
         adapter = object : ServiceAdapter(query, viewModel) {}
+
         servicesRecyclerView.adapter = adapter as ServiceAdapter
+
+        photoRecyclerView.adapter = MediaAdapter(dataBindingComponent, null)
+
         binding.lifecycleOwner = viewLifecycleOwner
         setupNavigation()
 

@@ -3,8 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- TODO: Make collapsing toolbar expand programmatically -->
-
     <data>
 
         <variable
@@ -95,15 +93,9 @@
                 android:layout_height="match_parent"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:spanCount="3"
+                app:listData="@{viewModel.photoRefs}"
+                tools:listitem="@layout/item_media"
                 tools:itemCount="3" />
-
-            <ImageView
-                android:id="@+id/photoImage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:imageRequestListener="@{imageRequestListener}"
-                app:storageRef="@{viewModel.photoRef}"
-                tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
 
         </LinearLayout>

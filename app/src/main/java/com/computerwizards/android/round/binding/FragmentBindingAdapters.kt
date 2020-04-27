@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Registry
 import com.bumptech.glide.annotation.GlideModule
@@ -12,6 +13,8 @@ import com.bumptech.glide.module.AppGlideModule
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.computerwizards.android.round.R
+import com.computerwizards.android.round.adapters.MediaAdapter
+import com.computerwizards.android.round.model.WorkMedia
 import com.firebase.ui.storage.images.FirebaseImageLoader
 import com.google.firebase.storage.StorageReference
 import java.io.InputStream
@@ -21,6 +24,15 @@ class FragmentBindingAdapters @Inject constructor(val fragment: Fragment) {
     @BindingAdapter("imageUrl")
     fun bindImage(imageView: ImageView, url: String?) {
         Glide.with(fragment).load(url).into(imageView)
+    }
+
+    @BindingAdapter("listData")
+    fun bindRecyclerView(
+        recyclerView: RecyclerView,
+        data: List<WorkMedia>?
+    ) {
+        val adapter = recyclerView.adapter as MediaAdapter
+        adapter.submitList(data)
     }
 
     @BindingAdapter(value = ["storageRef", "imageRequestListener"], requireAll = false)
