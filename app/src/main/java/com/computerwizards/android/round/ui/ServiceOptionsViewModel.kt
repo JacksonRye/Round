@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 class ServiceOptionsViewModel @Inject constructor(
     val firestore: FirebaseFirestore,
-    val user: User?
+    val user: User
 ) : ViewModel() {
 
     private val _closeEvent = MutableLiveData<Event<Unit>>()
@@ -24,7 +24,7 @@ class ServiceOptionsViewModel @Inject constructor(
     }
 
     fun onDelete(serviceId: String) {
-        firestore.collection("users").document(user?.uid!!)
+        firestore.collection("users").document(user.uid!!)
             .collection("services").document(serviceId).delete()
 
         firestore.collection("services").document(serviceId)

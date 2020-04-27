@@ -18,13 +18,29 @@
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="300dp">
 
-        <ImageView
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:storageRef="@{media.location}"
-            tools:srcCompat="@tools:sample/avatars" />
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                app:storageRef="@{media.location}"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <!--            <TextView-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="match_parent"-->
+            <!--                android:text=""-->
+            <!--                android:textAlignment="center"-->
+            <!--                android:textAppearance="@style/TextAppearance.AppCompat.Large" />-->
+
+        </LinearLayout>
 
 
     </com.google.android.material.card.MaterialCardView>

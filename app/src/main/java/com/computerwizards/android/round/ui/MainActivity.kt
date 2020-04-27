@@ -10,7 +10,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -20,6 +22,7 @@ import com.computerwizards.android.round.services.UploadService
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
+import javax.inject.Inject
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,6 +30,11 @@ class MainActivity : AppCompatActivity() {
 
     private var downloadUrl: Uri? = null
     private var fileUri: Uri? = null
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    private val viewModel by viewModels<MainActivityViewModel> { viewModelFactory }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -155,7 +163,7 @@ class MainActivity : AppCompatActivity() {
     private fun beginDownload() {
         fileUri?.let {
             // Get path
-            val path = "photos/" + it.lastPathSegment
+            val path = "photos/${viewModel.user.uid}" + it.lastPathSegment
 
             // Kick off DownloadService to download the file
             val intent = Intent(this, DownloadService::class.java)

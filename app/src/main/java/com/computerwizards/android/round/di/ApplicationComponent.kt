@@ -20,7 +20,9 @@ import javax.inject.Singleton
         ProfileModule::class,
         AddServiceModule::class,
         ServiceOptionsModule::class,
-        UserProfileModule::class
+        UserProfileModule::class,
+        MainActivityModule::class,
+        UploadServiceModule::class
     ]
 )
 interface ApplicationComponent : AndroidInjector<RoundApplication> {

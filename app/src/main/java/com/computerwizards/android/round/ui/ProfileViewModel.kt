@@ -16,14 +16,14 @@ import com.google.firebase.storage.StorageReference
 import javax.inject.Inject
 
 class ProfileViewModel @Inject constructor(
-    val firestore: FirebaseFirestore, val user: User?,
+    val firestore: FirebaseFirestore, val user: User,
     val storage: FirebaseStorage
 ) :
     ViewModel(),
     Servicable {
 
     init {
-        if (user == null) {
+        if (user == User()) {
             throw IllegalStateException("A null user should not access profile")
         }
         Log.d("ProfileViewModel", "${user}")
@@ -35,7 +35,7 @@ class ProfileViewModel @Inject constructor(
     val photoRefs: LiveData<List<WorkMedia>> = Transformations.map(_photoRefs) { storageRefs ->
         val workMedia = mutableListOf<WorkMedia>()
         for (ref in storageRefs) {
-            workMedia.add(WorkMedia(ref, user?.uid))
+            workMedia.add(WorkMedia(ref, user.uid))
         }
         Log.d(TAG, "workMedia: $workMedia")
         workMedia.toList()
@@ -43,7 +43,7 @@ class ProfileViewModel @Inject constructor(
 
 
     private fun getPhotos() {
-        storage.reference.child("photos").listAll().addOnSuccessListener { listResult ->
+        storage.reference.child("photos/${user.uid}").listAll().addOnSuccessListener { listResult ->
             Log.d(TAG, "Storage Refs: ${listResult.items}")
             _photoRefs.value = listResult.items.toMutableList()
         }
@@ -58,7 +58,7 @@ class ProfileViewModel @Inject constructor(
 //        firestore.collection("users").document("1HbhZTiDUpgZBcVjY8D1").collection("services")
 
     val myServicesQuery: Query =
-        firestore.collection("users").document(user?.uid!!).collection("services")
+        firestore.collection("users").document(user.uid!!).collection("services")
 
 
     override fun openService(service: Service) {
@@ -79,7 +79,7 @@ class ProfileViewModel @Inject constructor(
 
 
     companion object {
-        private const val TAG = "ProfileViewMode"
+        private const val TAG = "ProfileViewModel"
     }
 
 

@@ -23,7 +23,7 @@ class UserProfileFragment : DaggerFragment() {
 
     private val args by navArgs<UserProfileFragmentArgs>()
 
-    private lateinit var recyclerView: RecyclerView
+    private lateinit var photoRecyclerView: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,7 +31,7 @@ class UserProfileFragment : DaggerFragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        if (args.userUid == viewModel.loggedInUser?.uid) {
+        if (args.userUid == viewModel.loggedInUser.uid) {
             val action = UserProfileFragmentDirections.showLoggedInProfile()
             findNavController().navigate(action)
         }
@@ -57,7 +57,9 @@ class UserProfileFragment : DaggerFragment() {
 
         binding.userProfile = viewModel.userProfile
 
-        recyclerView = binding.recyclerView
+        photoRecyclerView = binding.photoRecyclerView
+
+
 
 
 

@@ -9,16 +9,23 @@ import android.os.IBinder
 import android.util.Log
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.computerwizards.android.round.R
+import com.computerwizards.android.round.model.User
 import com.computerwizards.android.round.ui.MainActivity
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
+import dagger.android.AndroidInjection
+import javax.inject.Inject
 
 class UploadService : MyBaseTaskService() {
 
     private lateinit var storageRef: StorageReference
 
+    @Inject
+    lateinit var user: User
+
     override fun onCreate() {
+        AndroidInjection.inject(this)
         super.onCreate()
 
         storageRef = Firebase.storage.reference
@@ -56,7 +63,7 @@ class UploadService : MyBaseTaskService() {
 
         // Get a reference to store file at photos/<FILENAME>.jpg
         fileUri.lastPathSegment?.let {
-            val photoRef = storageRef.child("photos")
+            val photoRef = storageRef.child("photos/${user.uid}")
                 .child(it)
 
             // Upload file to Firebase Storage

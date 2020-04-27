@@ -22,8 +22,8 @@ class ApplicationModule {
 
 
     @Provides
-    fun provideUser(): User? {
-        val fireUser = FirebaseAuth.getInstance().currentUser ?: return null
+    fun provideUser(): User {
+        val fireUser = FirebaseAuth.getInstance().currentUser ?: return User()
 
         return User(fireUser)
     }

@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 class UserProfileViewModel @Inject constructor(
     val firestore: FirebaseFirestore,
-    val loggedInUser: User?
+    val loggedInUser: User
 ) : ViewModel() {
 
     private val _userProfile = MutableLiveData<User>()
@@ -45,7 +45,7 @@ class UserProfileViewModel @Inject constructor(
             firestore.collection("users").document(userId).collection("users-liked")
 
         val usersLikedDocumentRef = usersLikedCollection
-            .document(loggedInUser?.uid!!)
+            .document(loggedInUser.uid!!)
 
         val loggedInLikesDocumentRef =
             firestore.collection("users").document(loggedInUser.uid!!).collection("likes")
@@ -69,7 +69,7 @@ class UserProfileViewModel @Inject constructor(
     }
 
     fun loggedInUserLikes(userId: String) {
-        firestore.collection("users").document(loggedInUser?.uid!!).collection("likes")
+        firestore.collection("users").document(loggedInUser.uid!!).collection("likes")
             .document(userId).get().addOnSuccessListener { documentSnapshot ->
                 _loggedInLikes.value = documentSnapshot.exists()
             }

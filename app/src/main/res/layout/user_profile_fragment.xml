@@ -136,9 +136,11 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view"
+                android:id="@+id/photo_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                tools:itemCount="4"
+                tools:listitem="@layout/item_media"
                 app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
                 app:spanCount="3" />
 
