@@ -9,6 +9,7 @@ import com.computerwizards.android.round.model.Service
 import com.computerwizards.android.round.model.User
 import com.computerwizards.android.round.model.WorkMedia
 import com.computerwizards.android.round.utils.Event
+import com.computerwizards.android.round.utils.getService
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.storage.FirebaseStorage
@@ -16,7 +17,8 @@ import com.google.firebase.storage.StorageReference
 import javax.inject.Inject
 
 class ProfileViewModel @Inject constructor(
-    val firestore: FirebaseFirestore, val user: User,
+    val firestore: FirebaseFirestore,
+    val user: User,
     val storage: FirebaseStorage
 ) :
     ViewModel(),
@@ -53,13 +55,7 @@ class ProfileViewModel @Inject constructor(
     val openAddServiceEvent: LiveData<Event<Unit>> = _openAddServiceEvent
 
 
-    //    Test Query
-//    val myServicesQuery: Query =
-//        firestore.collection("users").document("1HbhZTiDUpgZBcVjY8D1").collection("services")
-
-    val myServicesQuery: Query =
-        firestore.collection("users").document(user.uid!!).collection("services")
-
+    val myServicesQuery: Query = getService(user.uid!!)
 
     override fun openService(service: Service) {
     }

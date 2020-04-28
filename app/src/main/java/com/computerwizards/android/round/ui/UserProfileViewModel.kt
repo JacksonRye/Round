@@ -3,16 +3,23 @@ package com.computerwizards.android.round.ui
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import com.computerwizards.android.round.model.Service
 import com.computerwizards.android.round.model.User
+import com.computerwizards.android.round.model.WorkMedia
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import javax.inject.Inject
 
 class UserProfileViewModel @Inject constructor(
     val firestore: FirebaseFirestore,
-    val loggedInUser: User
-) : ViewModel() {
+    val loggedInUser: User,
+    val storage: FirebaseStorage
+) : ViewModel(), Servicable {
+
 
     private val _userProfile = MutableLiveData<User>()
     val userProfile: LiveData<User> = _userProfile
@@ -22,6 +29,25 @@ class UserProfileViewModel @Inject constructor(
     //
     private val _howManyLikes = MutableLiveData<String>()
     val howManyLikes: LiveData<String> = _howManyLikes
+
+
+    private val _photoRefs = MutableLiveData<List<StorageReference>>()
+    val photoRefs: LiveData<List<WorkMedia>> = Transformations.map(_photoRefs) { storageRefs ->
+        val workMedia = mutableListOf<WorkMedia>()
+        for (ref in storageRefs) {
+            workMedia.add(WorkMedia(ref, userProfile.value!!.uid))
+
+        }
+        Log.d(TAG, "workMedia: $workMedia")
+        workMedia.toList()
+    }
+
+    fun getPhotos(uid: String) {
+        storage.reference.child("photos/$uid").listAll().addOnSuccessListener { listResult ->
+            Log.d(TAG, "Storage Refs: ${listResult.items}")
+            _photoRefs.value = listResult.items.toMutableList()
+        }
+    }
 
 
     fun getProfileUser(currentProfileId: String) {
@@ -34,6 +60,7 @@ class UserProfileViewModel @Inject constructor(
             }
     }
 
+    override fun openService(service: Service) {}
 
     fun addToLike(userId: String) {
 

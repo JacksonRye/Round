@@ -75,7 +75,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+                app:spanCount="3"
                 tools:itemCount="2"
                 tools:listitem="@layout/item_service">
 
@@ -90,12 +91,12 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/photo_recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
                 app:spanCount="3"
                 app:listData="@{viewModel.photoRefs}"
                 tools:listitem="@layout/item_media"
-                tools:itemCount="3" />
+                tools:itemCount="4" />
 
 
         </LinearLayout>
