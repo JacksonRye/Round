@@ -67,7 +67,6 @@ dependencies {
     kapt 'com.github.bumptech.glide:compiler:4.11.0'
 
 
-
     // Other Firebase/Play services deps
     implementation 'com.google.firebase:firebase-auth:19.3.0'
     implementation 'com.google.android.gms:play-services-auth:18.0.0'

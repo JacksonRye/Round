@@ -30,6 +30,8 @@ import javax.inject.Inject
 
 class UserProfileFragment : DaggerFragment() {
 
+    private lateinit var servicesAdapter: ServiceAdapter
+
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
@@ -71,6 +73,8 @@ class UserProfileFragment : DaggerFragment() {
         }
 
         setupViewModel()
+
+        viewModel.uid = args.userUid
 
         binding.viewModel = viewModel
 
@@ -124,9 +128,21 @@ class UserProfileFragment : DaggerFragment() {
 
         photoRecyclerView.adapter = photoAdapter
 
-        val servicesAdapter = object : ServiceAdapter(getService(args.userUid), viewModel) {}
+        servicesAdapter = object : ServiceAdapter(getService(args.userUid), viewModel) {}
 
         serviceRecyclerView.adapter = servicesAdapter
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        servicesAdapter.startListening()
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        servicesAdapter.stopListening()
     }
 
 

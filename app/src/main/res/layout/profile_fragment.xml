@@ -82,7 +82,7 @@
 
             </androidx.recyclerview.widget.RecyclerView>
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/uploadButton"
                 android:layout_width="160dp"
                 android:layout_height="62dp"

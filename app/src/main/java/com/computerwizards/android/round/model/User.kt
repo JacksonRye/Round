@@ -1,12 +1,14 @@
 package com.computerwizards.android.round.model
 
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.storage.StorageReference
 
 data class User(
     var uid: String? = "",
     var displayName: String? = "",
     var email: String? = "",
-    var displayImageUrl: String? = "",
+//    var displayImageUrl: String? = "",
+    var storageReference: StorageReference? = null,
     var about: String? = "",
     var instanceToken: String? = ""
 ) {
@@ -14,8 +16,7 @@ data class User(
     constructor(user: FirebaseUser) : this(
         user.uid,
         user.displayName,
-        user.email,
-        user.photoUrl.toString()
+        user.email
     )
 
 }

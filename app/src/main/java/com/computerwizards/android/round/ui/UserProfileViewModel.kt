@@ -20,6 +20,7 @@ class UserProfileViewModel @Inject constructor(
     val storage: FirebaseStorage
 ) : ViewModel(), Servicable {
 
+    lateinit var uid: String
 
     private val _userProfile = MutableLiveData<User>()
     val userProfile: LiveData<User> = _userProfile
@@ -35,7 +36,7 @@ class UserProfileViewModel @Inject constructor(
     val photoRefs: LiveData<List<WorkMedia>> = Transformations.map(_photoRefs) { storageRefs ->
         val workMedia = mutableListOf<WorkMedia>()
         for (ref in storageRefs) {
-            workMedia.add(WorkMedia(ref, userProfile.value!!.uid))
+            workMedia.add(WorkMedia(ref, uid))
 
         }
         Log.d(TAG, "workMedia: $workMedia")
