@@ -13,6 +13,7 @@ import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.DataSource
 import com.bumptech.glide.load.engine.GlideException
@@ -99,6 +100,7 @@ class ProfileFragment : ListFragment() {
         binding.profileImageClicked = viewModel.profileImageClicked
 
 
+
         return binding.root
     }
 
@@ -125,6 +127,10 @@ class ProfileFragment : ListFragment() {
         viewModel.openAddServiceEvent.observe(viewLifecycleOwner, EventObserver {
             Log.d(TAG, "observing openAddServiceEvent")
             addServiceDialogFragment.show(parentFragmentManager, "ProfileFragment")
+        })
+        viewModel.openProfilePictureEvent.observe(viewLifecycleOwner, EventObserver {
+            val action = ProfileFragmentDirections.viewProfilePicture()
+            findNavController().navigate(action)
         })
     }
 

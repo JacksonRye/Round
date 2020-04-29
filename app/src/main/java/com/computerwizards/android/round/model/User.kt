@@ -8,7 +8,7 @@ data class User(
     var displayName: String? = "",
     var email: String? = "",
 //    var displayImageUrl: String? = "",
-    var storageReference: StorageReference? = null,
+    var profilePictureStorageRef: StorageReference? = null,
     var about: String? = "",
     var instanceToken: String? = ""
 ) {

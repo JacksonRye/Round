@@ -5,6 +5,10 @@
 
     <data>
 
+        <variable
+            name="viewModel"
+            type="com.computerwizards.android.round.ui.ProfilePictureViewModel" />
+
     </data>
 
    <com.google.android.material.card.MaterialCardView
@@ -12,17 +16,84 @@
        android:layout_height="match_parent">
 
 
-       <androidx.coordinatorlayout.widget.CoordinatorLayout
+       <androidx.constraintlayout.widget.ConstraintLayout
            android:layout_width="match_parent"
            android:layout_height="match_parent">
 
            <ImageView
+               android:id="@+id/imageView2"
                android:layout_width="wrap_content"
                android:layout_height="wrap_content"
-               app:layout_anchorGravity="top|left"
-               tools:src="@tools:sample/avatars"/>
+               android:layout_marginStart="24dp"
+               android:layout_marginTop="12dp"
+               app:layout_constraintStart_toStartOf="parent"
+               app:layout_constraintTop_toTopOf="parent"
+               app:srcCompat="@drawable/ic_back" />
 
-       </androidx.coordinatorlayout.widget.CoordinatorLayout>
+           <com.google.android.material.textview.MaterialTextView
+               android:id="@+id/textView3"
+               style="@style/TextAppearance.AppCompat.Large"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_marginStart="68dp"
+               android:layout_marginTop="12dp"
+               android:text="@{viewModel.user.displayName}"
+               app:layout_constraintStart_toEndOf="@+id/imageView2"
+               app:layout_constraintTop_toTopOf="parent"
+               tools:text="John Doe" />
+
+
+           <com.google.android.material.textfield.TextInputLayout
+               android:id="@+id/textInputLayout"
+               android:layout_width="418dp"
+               android:layout_height="121dp"
+               app:layout_constraintBottom_toTopOf="@+id/button2"
+               app:layout_constraintEnd_toEndOf="parent"
+               app:layout_constraintStart_toStartOf="parent"
+               app:layout_constraintTop_toBottomOf="@+id/imageView3">
+
+
+               <com.google.android.material.textfield.TextInputEditText
+                   android:id="@+id/aboutT"
+                   android:layout_width="match_parent"
+                   android:layout_height="match_parent"
+                   android:hint="Tell us about you!"
+                   android:inputType="textMultiLine"
+                   android:text="@={viewModel.user.about}" />
+
+           </com.google.android.material.textfield.TextInputLayout>
+
+           <ImageView
+               android:id="@+id/imageView3"
+               android:layout_width="186dp"
+               android:layout_height="191dp"
+               android:layout_marginBottom="316dp"
+               app:layout_constraintBottom_toTopOf="@+id/button2"
+               app:layout_constraintEnd_toEndOf="parent"
+               app:layout_constraintHorizontal_bias="0.497"
+               app:layout_constraintStart_toStartOf="parent"
+               app:storageRef="@{viewModel.user.profilePictureStorageRef}"
+               tools:srcCompat="@tools:sample/avatars" />
+
+           <com.google.android.material.button.MaterialButton
+               android:id="@+id/button2"
+               android:layout_width="0dp"
+               android:layout_height="wrap_content"
+               android:layout_marginBottom="48dp"
+               android:onClick="@{() -> viewModel.updatePicture()}"
+               android:text="Update Profile Picture"
+               app:layout_constraintBottom_toBottomOf="parent"
+               app:layout_constraintEnd_toEndOf="parent"
+               app:layout_constraintHorizontal_bias="0.489"
+               app:layout_constraintStart_toStartOf="parent" />
+
+           <com.google.android.material.button.MaterialButton
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="Save About"
+               app:layout_constraintEnd_toEndOf="parent"
+               app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+       </androidx.constraintlayout.widget.ConstraintLayout>
 
    </com.google.android.material.card.MaterialCardView>
 </layout>

@@ -43,6 +43,9 @@ class ProfileViewModel @Inject constructor(
         workMedia.toList()
     }
 
+    private val _openProfilePictureEvent = MutableLiveData<Event<Unit>>()
+    val openProfilePictureEvent: LiveData<Event<Unit>> = _openProfilePictureEvent
+
 
     private fun getPhotos() {
         storage.reference.child("photos/${user.uid}").listAll().addOnSuccessListener { listResult ->
@@ -71,6 +74,10 @@ class ProfileViewModel @Inject constructor(
 
     fun onProfileImageClicked() {
         _profileImageClicked.value = !profileImageClicked.value!!
+    }
+
+    fun openProfilePicture() {
+        _openProfilePictureEvent.value = Event(Unit)
     }
 
 

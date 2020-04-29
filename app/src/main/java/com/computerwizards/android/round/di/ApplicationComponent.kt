@@ -22,7 +22,8 @@ import javax.inject.Singleton
         ServiceOptionsModule::class,
         UserProfileModule::class,
         MainActivityModule::class,
-        UploadServiceModule::class
+        UploadServiceModule::class,
+        ProfilePictureModule::class
     ]
 )
 interface ApplicationComponent : AndroidInjector<RoundApplication> {

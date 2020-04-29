@@ -18,7 +18,11 @@
         android:id="@+id/profileFragment"
         android:name="com.computerwizards.android.round.ui.ProfileFragment"
         android:label="profile_fragment"
-        tools:layout="@layout/profile_fragment" />
+        tools:layout="@layout/profile_fragment">
+        <action
+            android:id="@+id/viewProfilePicture"
+            app:destination="@id/profilePictureFragment" />
+    </fragment>
     <fragment
         android:id="@+id/addFragment"
         android:name="com.computerwizards.android.round.ui.AddFragment"
@@ -47,4 +51,8 @@
             app:destination="@id/profileFragment"
             app:popUpTo="@id/homeFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/profilePictureFragment"
+        android:name="com.computerwizards.android.round.ui.ProfilePictureFragment"
+        android:label="ProfilePictureFragment" />
 </navigation>

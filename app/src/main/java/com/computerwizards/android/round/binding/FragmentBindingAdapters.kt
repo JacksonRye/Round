@@ -37,7 +37,8 @@ class FragmentBindingAdapters @Inject constructor(val fragment: Fragment) {
 
     @BindingAdapter(value = ["storageRef", "imageRequestListener"], requireAll = false)
     fun bindStorage(
-        imageView: ImageView, storageReference: StorageReference,
+        imageView: ImageView,
+        storageReference: StorageReference?,
         listener: RequestListener<Drawable?>?
     ) {
         val options = RequestOptions()

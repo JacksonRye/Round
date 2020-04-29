@@ -91,7 +91,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    override fun onNewIntent(intent: Intent) {
+    public override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
 
         // Check if this activity was launched by clicking on an upload notification

@@ -1,6 +1,5 @@
 package com.computerwizards.android.round.services
 
-import android.app.Service
 import android.content.Intent
 import android.content.IntentFilter
 import android.net.Uri
@@ -39,6 +38,7 @@ class UploadService : MyBaseTaskService() {
         Log.d(TAG, "onStartCommand:$intent:$startId")
         if (ACTION_UPLOAD == intent.action) {
             val fileUri = intent.getParcelableExtra<Uri>(EXTRA_FILE_URI)
+            val isProfilePicture = intent.getBooleanExtra(EXTRA_PROFILE_BOOLEAN, false)
 
             // Make sure we have permission to read the data
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -47,23 +47,27 @@ class UploadService : MyBaseTaskService() {
                     Intent.FLAG_GRANT_READ_URI_PERMISSION
                 )
 
-                uploadFromUri(fileUri)
+                uploadFromUri(fileUri, isProfilePicture)
             }
 
         }
 
-        return Service.START_REDELIVER_INTENT
+        return START_REDELIVER_INTENT
     }
 
-    private fun uploadFromUri(fileUri: Uri) {
+    private fun uploadFromUri(fileUri: Uri, isProfilePicture: Boolean = false) {
         Log.d(TAG, "uploadFromUri:src:" + fileUri.toString())
 
         taskStarted()
         showProgressNotification(getString(R.string.progress_uploading), 0, 0)
 
         // Get a reference to store file at photos/<FILENAME>.jpg
+        var mediaPath = "photos/${user.uid}"
         fileUri.lastPathSegment?.let {
-            val photoRef = storageRef.child("photos/${user.uid}")
+            if (isProfilePicture) {
+                mediaPath += "/profilePic"
+            }
+            val photoRef = storageRef.child(mediaPath)
                 .child(it)
 
             // Upload file to Firebase Storage
@@ -151,6 +155,7 @@ class UploadService : MyBaseTaskService() {
         /* Intent Extras */
         const val EXTRA_FILE_URI = "extra_file_uri"
         const val EXTRA_DOWNLOAD_URL = "extra_download_url"
+        const val EXTRA_PROFILE_BOOLEAN = "extra_profile_boolean"
 
         val intentFilter: IntentFilter
             get() {
