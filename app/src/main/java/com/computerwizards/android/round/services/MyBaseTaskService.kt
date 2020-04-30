@@ -3,19 +3,19 @@ package com.computerwizards.android.round.services
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.lifecycle.LifecycleService
 import com.computerwizards.android.round.R
 
 /**
  * Base class for Services that keep track of the number of active jobs and self-stop when the
  * count is zero.
  */
-abstract class MyBaseTaskService : Service() {
+abstract class MyBaseTaskService : LifecycleService() {
 
     private var numTasks = 0
 

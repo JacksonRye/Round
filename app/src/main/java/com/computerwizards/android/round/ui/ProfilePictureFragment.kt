@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.computerwizards.android.round.R
 import com.computerwizards.android.round.binding.FragmentDataBindingComponent
@@ -46,6 +47,9 @@ class ProfilePictureFragment : DaggerFragment() {
         setupNavigation()
 
 
+        viewModel.liveDataUser.observe(viewLifecycleOwner, Observer {
+            binding.databaseUser = it
+        })
 
 
         return binding.root

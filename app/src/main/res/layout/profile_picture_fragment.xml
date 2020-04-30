@@ -9,6 +9,10 @@
             name="viewModel"
             type="com.computerwizards.android.round.ui.ProfilePictureViewModel" />
 
+        <variable
+            name="databaseUser"
+            type="com.computerwizards.android.round.model.User" />
+
     </data>
 
    <com.google.android.material.card.MaterialCardView
@@ -37,7 +41,7 @@
                android:layout_height="wrap_content"
                android:layout_marginStart="68dp"
                android:layout_marginTop="12dp"
-               android:text="@{viewModel.user.displayName}"
+               android:text="@{databaseUser.displayName}"
                app:layout_constraintStart_toEndOf="@+id/imageView2"
                app:layout_constraintTop_toTopOf="parent"
                tools:text="John Doe" />
@@ -59,7 +63,7 @@
                    android:layout_height="match_parent"
                    android:hint="Tell us about you!"
                    android:inputType="textMultiLine"
-                   android:text="@={viewModel.user.about}" />
+                   android:text="@={databaseUser.about}" />
 
            </com.google.android.material.textfield.TextInputLayout>
 
@@ -72,7 +76,7 @@
                app:layout_constraintEnd_toEndOf="parent"
                app:layout_constraintHorizontal_bias="0.497"
                app:layout_constraintStart_toStartOf="parent"
-               app:storageRef="@{viewModel.user.profilePictureStorageRef}"
+               app:imageUrl="@{databaseUser.displayImageUrl}"
                tools:srcCompat="@tools:sample/avatars" />
 
            <com.google.android.material.button.MaterialButton

@@ -148,7 +148,7 @@ class ProfilePictureBottomSheet : BottomSheetDialogFragment() {
         // Pick an image from storage
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
         intent.type = "image/*"
-        startActivityForResult(intent, RC_TAKE_PHOTO)
+        startActivityForResult(intent, RC_SELECT_IMAGE)
     }
 
     private fun onUploadResultIntent(intent: Intent) {
@@ -168,6 +168,7 @@ class ProfilePictureBottomSheet : BottomSheetDialogFragment() {
             RC_SELECT_IMAGE -> if (resultCode == Activity.RESULT_OK) {
                 selectedImage = data?.data
             }
+            else -> null
         }
         selectedImage?.let {
             uploadFromUri(it)

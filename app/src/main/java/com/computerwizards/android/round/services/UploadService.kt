@@ -6,13 +6,16 @@ import android.net.Uri
 import android.os.Build
 import android.os.IBinder
 import android.util.Log
+import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.computerwizards.android.round.R
 import com.computerwizards.android.round.model.User
+import com.computerwizards.android.round.repository.UserRepository
 import com.computerwizards.android.round.ui.MainActivity
-import com.google.firebase.ktx.Firebase
+import com.computerwizards.android.round.utils.getUserDocRef
+import com.computerwizards.android.round.utils.saveUser
+import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.ktx.storage
 import dagger.android.AndroidInjection
 import javax.inject.Inject
 
@@ -23,33 +26,50 @@ class UploadService : MyBaseTaskService() {
     @Inject
     lateinit var user: User
 
+    @Inject
+    lateinit var userRepository: UserRepository
+
+    @Inject
+    lateinit var storage: FirebaseStorage
+
+    private lateinit var databaseUser: User
+
     override fun onCreate() {
         AndroidInjection.inject(this)
         super.onCreate()
 
-        storageRef = Firebase.storage.reference
+        userRepository.getUser(user.uid!!).observe(this, Observer { user ->
+            databaseUser = user
+        })
+
+        storageRef = storage.reference
+
     }
 
-    override fun onBind(intent: Intent?): IBinder? {
+    override fun onBind(intent: Intent): IBinder? {
+        super.onBind(intent)
         return null
     }
 
-    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        super.onStartCommand(intent, flags, startId)
         Log.d(TAG, "onStartCommand:$intent:$startId")
-        if (ACTION_UPLOAD == intent.action) {
-            val fileUri = intent.getParcelableExtra<Uri>(EXTRA_FILE_URI)
-            val isProfilePicture = intent.getBooleanExtra(EXTRA_PROFILE_BOOLEAN, false)
+        if (intent != null) {
+            if (ACTION_UPLOAD == intent.action) {
+                val fileUri = intent.getParcelableExtra<Uri>(EXTRA_FILE_URI)
+                val isProfilePicture = intent.getBooleanExtra(EXTRA_PROFILE_BOOLEAN, false)
 
-            // Make sure we have permission to read the data
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                contentResolver.takePersistableUriPermission(
-                    fileUri,
-                    Intent.FLAG_GRANT_READ_URI_PERMISSION
-                )
+                // Make sure we have permission to read the data
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    contentResolver.takePersistableUriPermission(
+                        fileUri,
+                        Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    )
 
-                uploadFromUri(fileUri, isProfilePicture)
+                    uploadFromUri(fileUri, isProfilePicture)
+                }
+
             }
-
         }
 
         return START_REDELIVER_INTENT
@@ -96,6 +116,14 @@ class UploadService : MyBaseTaskService() {
                 broadcastUploadFinished(downloadUri, fileUri)
                 showUploadFinishedNotification(downloadUri, fileUri)
                 taskCompleted()
+
+                if (isProfilePicture) {
+                    databaseUser.displayImageUrl = downloadUri.toString()
+//                        TODO: make some of this server size
+//                        Missing file because extension deletes the image after upload
+                    saveUser(databaseUser, getUserDocRef(databaseUser.uid!!))
+                }
+
                 // [END_EXCLUDE]
             }.addOnFailureListener { exception ->
                 // Upload failed

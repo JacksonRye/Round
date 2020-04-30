@@ -4,18 +4,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.computerwizards.android.round.model.User
+import com.computerwizards.android.round.repository.UserRepository
 import com.computerwizards.android.round.utils.Event
-import com.google.android.gms.tasks.Task
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.storage.FirebaseStorage
 import javax.inject.Inject
 
 class ProfilePictureViewModel @Inject constructor(
     val user: User,
-    val storage: FirebaseStorage,
-    val firestore: FirebaseFirestore
+    val userRepository: UserRepository
 ) : ViewModel() {
 
+    val liveDataUser = userRepository.getUser(user.uid!!)
 
     private val _openCameraEvent = MutableLiveData<Event<Unit>>()
     val openCameraEvent: LiveData<Event<Unit>> = _openCameraEvent
@@ -37,23 +35,6 @@ class ProfilePictureViewModel @Inject constructor(
 
     fun openGallery() {
         _openGalleryEvent.value = Event(Unit)
-    }
-
-    val userDocRef = firestore.collection("users").document("${user.uid}")
-
-    fun updateUser(user: User): Task<Void> {
-
-        user.profilePictureStorageRef =
-            storage.reference.child("photos/${user.uid}/profilePic")
-                .listAll().result?.items?.last()
-
-        return firestore.runTransaction { transaction ->
-
-            transaction.set(userDocRef, user)
-
-
-            null
-        }
     }
 
 

@@ -22,17 +22,21 @@ class DownloadService : MyBaseTaskService() {
         storageRef = Firebase.storage.reference
     }
 
-    override fun onBind(intent: Intent?): IBinder? {
+    override fun onBind(intent: Intent): IBinder? {
+        super.onBind(intent)
         return null
     }
 
-    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        super.onStartCommand(intent, flags, startId)
         Log.d(TAG, "onStartCommand:$intent:$startId")
 
-        if (ACTION_DOWNLOAD == intent.action) {
-            // Get the path to download from the intent
-            val downloadPath = intent.getStringExtra(EXTRA_DOWNLOAD_PATH)
-            downloadFromPath(downloadPath)
+        if (intent != null) {
+            if (ACTION_DOWNLOAD == intent.action) {
+                // Get the path to download from the intent
+                val downloadPath = intent.getStringExtra(EXTRA_DOWNLOAD_PATH)
+                downloadFromPath(downloadPath)
+            }
         }
 
         return Service.START_REDELIVER_INTENT

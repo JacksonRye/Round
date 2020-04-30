@@ -23,7 +23,16 @@ import javax.inject.Inject
 class FragmentBindingAdapters @Inject constructor(val fragment: Fragment) {
     @BindingAdapter("imageUrl")
     fun bindImage(imageView: ImageView, url: String?) {
-        Glide.with(fragment).load(url).into(imageView)
+
+        val options = RequestOptions()
+            .error(R.drawable.ic_error)
+
+        Glide.with(fragment)
+            .load(url)
+            .apply(options)
+            .into(imageView)
+
+
     }
 
     @BindingAdapter("listData")
