@@ -134,12 +134,11 @@ class ProfilePictureBottomSheet : BottomSheetDialogFragment() {
 
     private fun launchCamera() {
 
-        val takePicture = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-
-        startActivityForResult(
-            takePicture, RC_TAKE_PHOTO
-        )
-
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+            takePictureIntent.resolveActivity(requireActivity().packageManager)?.also {
+                startActivityForResult(takePictureIntent, RC_TAKE_PHOTO)
+            }
+        }
     }
 
     private fun selectImage() {
@@ -159,16 +158,16 @@ class ProfilePictureBottomSheet : BottomSheetDialogFragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
         var selectedImage: Uri? = null
         when (requestCode) {
             RC_TAKE_PHOTO -> if (resultCode == Activity.RESULT_OK) {
                 selectedImage = data?.data
+                Log.d(TAG, "RC_TAKE_PHOTO: ${selectedImage.toString()}")
             }
             RC_SELECT_IMAGE -> if (resultCode == Activity.RESULT_OK) {
                 selectedImage = data?.data
+                Log.d(TAG, "RC_SELECT_IMAGE: ${selectedImage.toString()}")
             }
-            else -> null
         }
         selectedImage?.let {
             uploadFromUri(it)
@@ -198,7 +197,7 @@ class ProfilePictureBottomSheet : BottomSheetDialogFragment() {
     }
 
     companion object {
-        private const val RC_TAKE_PHOTO = 1020
+        private const val RC_TAKE_PHOTO = 1001
         private const val RC_SELECT_IMAGE = 1010
         private const val KEY_FILE_URI = "key_file_uri"
         private const val KEY_DOWNLOAD_URL = "key_download_url"

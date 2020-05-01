@@ -14,6 +14,8 @@ import com.computerwizards.android.round.repository.UserRepository
 import com.computerwizards.android.round.ui.MainActivity
 import com.computerwizards.android.round.utils.getUserDocRef
 import com.computerwizards.android.round.utils.saveUser
+import com.computerwizards.android.round.utils.updateProfilePicture
+import com.google.firebase.functions.FirebaseFunctions
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import dagger.android.AndroidInjection
@@ -31,6 +33,9 @@ class UploadService : MyBaseTaskService() {
 
     @Inject
     lateinit var storage: FirebaseStorage
+
+    @Inject
+    lateinit var functions: FirebaseFunctions
 
     private lateinit var databaseUser: User
 
@@ -118,11 +123,17 @@ class UploadService : MyBaseTaskService() {
                 taskCompleted()
 
                 if (isProfilePicture) {
-                    databaseUser.displayImageUrl = downloadUri.toString()
-//                        TODO: make some of this server size
-//                        Missing file because extension deletes the image after upload
-                    saveUser(databaseUser, getUserDocRef(databaseUser.uid!!))
-                }
+//                    databaseUser.displayImageUrl = downloadUri.toString()
+                    databaseUser.let {user ->
+                        updateProfilePicture(user.uid!!)
+                            .addOnCompleteListener { task ->
+                                if (!task.isSuccessful) {
+                                    throw Exception(task.exception)
+                                }
+                                Log.d(TAG, "upload successful")
+                            }
+                    }
+  }
 
                 // [END_EXCLUDE]
             }.addOnFailureListener { exception ->
