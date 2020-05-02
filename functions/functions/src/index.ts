@@ -35,46 +35,22 @@ export const notifyNewLike = functions.firestore.document('/users/{userId}/users
 
     })
 
-export const updateProfilePicture =
+export const updateDp = functions.https.onCall(async (data, context) => {
 
-    functions.https.onCall(async (data, callContext) => {
-        const uid = data.uid
+    try {
 
-        try {
+        const imageUrl = data.imageUrl
 
-            console.log("uid", uid)
+        console.log("imageUrl", imageUrl)
 
-            if (!(typeof uid === 'string') || uid.length === 0) {
-                throw new functions.https.HttpsError('invalid-argument', 'The function must be called ' + '\
-            the uid of the authenticated user')
-            }
+        const uid = context.auth.uid
 
-            return functions.storage.object().onFinalize(async (object, context) => {
-                try {
-                    const contentType = object.contentType
+        return admin.firestore().doc(`users/${uid}`).set({
+            displayImageUrl: imageUrl
+        }, { merge: true })
 
-                    if (!contentType.startsWith('image/')) {
-                        console.log("This is not an image.")
-                        return
-                    }
+    } catch (err) {
+        console.log(err)
+    }
 
-                    const mediaLink = object.mediaLink
-
-                    console.log("mediaLink", mediaLink)
-
-                    const user = await admin.firestore().doc(`users/${uid}/`).get()
-
-                    return user.ref.set({
-                        displayImageUrl: mediaLink
-                    }, { merge: true })
-
-                } catch (err) {
-                    console.log(err)
-                }
-            })
-        } catch (err) {
-            console.log(err)
-        }
-
-    })
-
+})

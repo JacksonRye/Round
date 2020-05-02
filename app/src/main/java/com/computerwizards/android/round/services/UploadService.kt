@@ -12,9 +12,7 @@ import com.computerwizards.android.round.R
 import com.computerwizards.android.round.model.User
 import com.computerwizards.android.round.repository.UserRepository
 import com.computerwizards.android.round.ui.MainActivity
-import com.computerwizards.android.round.utils.getUserDocRef
-import com.computerwizards.android.round.utils.saveUser
-import com.computerwizards.android.round.utils.updateProfilePicture
+import com.computerwizards.android.round.utils.updateDp
 import com.google.firebase.functions.FirebaseFunctions
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -95,6 +93,8 @@ class UploadService : MyBaseTaskService() {
             val photoRef = storageRef.child(mediaPath)
                 .child(it)
 
+            Log.d(TAG, "photoRef: $photoRef")
+
             // Upload file to Firebase Storage
             Log.d(TAG, "uploadFromUri:dst:" + photoRef.path)
             photoRef.putFile(fileUri).addOnProgressListener { taskSnapshot ->
@@ -123,17 +123,12 @@ class UploadService : MyBaseTaskService() {
                 taskCompleted()
 
                 if (isProfilePicture) {
-//                    databaseUser.displayImageUrl = downloadUri.toString()
-                    databaseUser.let {user ->
-                        updateProfilePicture(user.uid!!)
-                            .addOnCompleteListener { task ->
-                                if (!task.isSuccessful) {
-                                    throw Exception(task.exception)
-                                }
-                                Log.d(TAG, "upload successful")
-                            }
+                    updateDp(downloadUri.toString()).addOnCompleteListener { task ->
+                        if (!task.isSuccessful) {
+                            throw Exception(task.exception)
+                        }
                     }
-  }
+                }
 
                 // [END_EXCLUDE]
             }.addOnFailureListener { exception ->

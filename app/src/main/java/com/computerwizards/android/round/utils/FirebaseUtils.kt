@@ -27,25 +27,24 @@ fun saveUser(user: User, userDocRef: DocumentReference): Task<Void> {
     }
 }
 
-fun updateProfilePicture(uid: String): Task<Void> {
-    // create the arguments to the callable function.
+fun updateDp(imageUrl: String): Task<Void> {
+
     val data = hashMapOf(
-        "uid" to uid
+        "imageUrl" to imageUrl
     )
 
     return functions
-        .getHttpsCallable("updateProfilePicture")
+        .getHttpsCallable("updateDp")
         .call(data)
         .continueWith { task ->
-            // This continuation runs on either success or failure, but if the task
-            // has failed then result will throw an Exception which will be
-            // propagated down.
+
             if (!task.isSuccessful) {
                 throw Exception(task.exception)
             }
 
             null
         }
+
 }
 
 private const val TAG = "FirebaseUtils"
