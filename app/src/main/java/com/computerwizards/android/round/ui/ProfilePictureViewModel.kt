@@ -3,14 +3,14 @@ package com.computerwizards.android.round.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.computerwizards.android.model.User
+import com.computerwizards.android.round.model.User
 import com.computerwizards.android.round.repository.UserRepository
 import com.computerwizards.android.round.utils.Event
 import timber.log.Timber
 import javax.inject.Inject
 
 class ProfilePictureViewModel @Inject constructor(
-    val user: com.computerwizards.android.model.User,
+    val user: User,
     userRepository: UserRepository
 ) : ViewModel() {
 
@@ -23,8 +23,8 @@ class ProfilePictureViewModel @Inject constructor(
         }
     }
 
-    private val _liveDataUser = MutableLiveData<com.computerwizards.android.model.User>()
-    val liveDataUser: LiveData<com.computerwizards.android.model.User> = _liveDataUser
+    private val _liveDataUser = MutableLiveData<User>()
+    val liveDataUser: LiveData<User> = _liveDataUser
 
     private val _openCameraEvent = MutableLiveData<Event<Unit>>()
     val openCameraEvent: LiveData<Event<Unit>> = _openCameraEvent

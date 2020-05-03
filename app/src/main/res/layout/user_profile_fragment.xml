@@ -21,7 +21,7 @@
             name="imageRequestListener"
             type="com.bumptech.glide.request.RequestListener&lt;Drawable>" />
 
-        <import type="com.computerwizards.android.model.User" />
+        <import type="com.computerwizards.android.round.model.User" />
 
     </data>
 

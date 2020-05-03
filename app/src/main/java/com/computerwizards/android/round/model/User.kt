@@ -1,6 +1,7 @@
-package com.computerwizards.android.model
+package com.computerwizards.android.round.model
 
 import com.google.firebase.auth.FirebaseUser
+
 
 data class User(
     var uid: String? = "",

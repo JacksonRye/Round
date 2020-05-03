@@ -3,14 +3,14 @@ package com.computerwizards.android.round.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.computerwizards.android.model.User
+import com.computerwizards.android.round.model.User
 import com.computerwizards.android.round.utils.Event
 import com.google.firebase.firestore.FirebaseFirestore
 import javax.inject.Inject
 
 class ServiceOptionsViewModel @Inject constructor(
     val firestore: FirebaseFirestore,
-    val user: com.computerwizards.android.model.User
+    val user: User
 ) : ViewModel() {
 
     private val _closeEvent = MutableLiveData<Event<Unit>>()

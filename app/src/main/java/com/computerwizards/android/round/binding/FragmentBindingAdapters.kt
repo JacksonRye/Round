@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Registry
@@ -14,20 +13,20 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.computerwizards.android.round.R
 import com.computerwizards.android.round.adapters.MediaAdapter
-import com.computerwizards.android.model.WorkMedia
+import com.computerwizards.android.round.model.WorkMedia
 import com.firebase.ui.storage.images.FirebaseImageLoader
 import com.google.firebase.storage.StorageReference
 import java.io.InputStream
 import javax.inject.Inject
 
-class FragmentBindingAdapters @Inject constructor(val fragment: Fragment) {
+class FragmentBindingAdapters @Inject constructor(val context: Context) {
     @BindingAdapter("imageUrl")
     fun bindImage(imageView: ImageView, url: String?) {
 
         val options = RequestOptions()
             .error(R.drawable.ic_error)
 
-        Glide.with(fragment)
+        Glide.with(context)
             .load(url)
             .apply(options)
             .into(imageView)
@@ -38,7 +37,7 @@ class FragmentBindingAdapters @Inject constructor(val fragment: Fragment) {
     @BindingAdapter("listData")
     fun bindRecyclerView(
         recyclerView: RecyclerView,
-        data: List<com.computerwizards.android.model.WorkMedia>?
+        data: List<WorkMedia>?
     ) {
         val adapter = recyclerView.adapter as MediaAdapter
         adapter.submitList(data)
@@ -53,7 +52,7 @@ class FragmentBindingAdapters @Inject constructor(val fragment: Fragment) {
         val options = RequestOptions()
             .error(R.drawable.ic_error)
 
-        GlideApp.with(fragment).load(storageReference)
+        GlideApp.with(context).load(storageReference)
             .apply(options)
             .listener(listener).into(imageView)
     }

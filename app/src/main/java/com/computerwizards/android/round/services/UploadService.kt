@@ -8,7 +8,7 @@ import android.os.IBinder
 import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.computerwizards.android.round.R
-import com.computerwizards.android.model.User
+import com.computerwizards.android.round.model.User
 import com.computerwizards.android.round.repository.UserRepository
 import com.computerwizards.android.round.ui.MainActivity
 import com.computerwizards.android.round.utils.updateDp
@@ -24,7 +24,7 @@ class UploadService : MyBaseTaskService() {
     private lateinit var storageRef: StorageReference
 
     @Inject
-    lateinit var user: com.computerwizards.android.model.User
+    lateinit var user: User
 
     @Inject
     lateinit var userRepository: UserRepository
@@ -35,7 +35,7 @@ class UploadService : MyBaseTaskService() {
     @Inject
     lateinit var functions: FirebaseFunctions
 
-    private lateinit var databaseUser: com.computerwizards.android.model.User
+    private lateinit var databaseUser: User
 
     override fun onCreate() {
         AndroidInjection.inject(this)

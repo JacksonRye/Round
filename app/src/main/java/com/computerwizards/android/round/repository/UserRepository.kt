@@ -2,7 +2,7 @@ package com.computerwizards.android.round.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.computerwizards.android.model.User
+import com.computerwizards.android.round.model.User
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
@@ -20,18 +20,18 @@ class UserRepository @Inject constructor(
 
 //    fun getUser
 
-    fun getUser(userId: String): LiveData<com.computerwizards.android.model.User> {
-        val data = MutableLiveData<com.computerwizards.android.model.User>()
+    fun getUser(userId: String): LiveData<User> {
+        val data = MutableLiveData<User>()
 
         firestore.collection("users").document(userId)
             .get().addOnSuccessListener { documentSnapshot ->
-                data.value = documentSnapshot.toObject<com.computerwizards.android.model.User>()
+                data.value = documentSnapshot.toObject<User>()
             }
 
         return data
     }
 
-    fun getUserFromCloud(userId: String): Task<com.computerwizards.android.model.User> {
+    fun getUserFromCloud(userId: String): Task<User> {
         val data = hashMapOf(
             "uid" to userId
         )
@@ -46,7 +46,7 @@ class UserRepository @Inject constructor(
 
                 val result = task.result?.data as HashMap<*, *>
 
-                val user = com.computerwizards.android.model.User(result)
+                val user = User(result)
 
                 Timber.d("getUserFromCloud:result: ${result}")
 

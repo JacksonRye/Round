@@ -25,7 +25,6 @@ import com.computerwizards.android.round.binding.FragmentDataBindingComponent
 import com.computerwizards.android.round.databinding.UserProfileFragmentBinding
 import com.computerwizards.android.round.utils.getService
 import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.profile_fragment.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -48,7 +47,8 @@ class UserProfileFragment : DaggerFragment() {
 
     private lateinit var userUid: String
 
-    private var dataBindingComponent: DataBindingComponent = FragmentDataBindingComponent(this)
+    private val dataBindingComponent: DataBindingComponent
+            by lazy { FragmentDataBindingComponent(requireContext()) }
 
     override fun onCreateView(
         inflater: LayoutInflater,

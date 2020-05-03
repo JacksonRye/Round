@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.computerwizards.android.model.Service
-import com.computerwizards.android.model.User
-import com.computerwizards.android.model.WorkMedia
+import com.computerwizards.android.round.model.Service
+import com.computerwizards.android.round.model.User
+import com.computerwizards.android.round.model.WorkMedia
 import com.computerwizards.android.round.repository.UserRepository
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -16,15 +16,15 @@ import javax.inject.Inject
 
 class UserProfileViewModel @Inject constructor(
     val firestore: FirebaseFirestore,
-    val loggedInUser: com.computerwizards.android.model.User,
+    val loggedInUser: User,
     val storage: FirebaseStorage,
     val userRepository: UserRepository
 ) : ViewModel(), Servicable {
 
     lateinit var uid: String
 
-    private val _userProfile = MutableLiveData<com.computerwizards.android.model.User>()
-    val userProfile: LiveData<com.computerwizards.android.model.User> = _userProfile
+    private val _userProfile = MutableLiveData<User>()
+    val userProfile: LiveData<User> = _userProfile
 
     private val _loggedInLikes = MutableLiveData<Boolean>()
     val userLiked: LiveData<Boolean> = _loggedInLikes
@@ -34,10 +34,15 @@ class UserProfileViewModel @Inject constructor(
 
 
     private val _photoRefs = MutableLiveData<List<StorageReference>>()
-    val photoRefs: LiveData<List<com.computerwizards.android.model.WorkMedia>> = Transformations.map(_photoRefs) { storageRefs ->
-        val workMedia = mutableListOf<com.computerwizards.android.model.WorkMedia>()
+    val photoRefs: LiveData<List<WorkMedia>> = Transformations.map(_photoRefs) { storageRefs ->
+        val workMedia = mutableListOf<WorkMedia>()
         for (ref in storageRefs) {
-            workMedia.add(com.computerwizards.android.model.WorkMedia(ref, uid))
+            workMedia.add(
+                WorkMedia(
+                    ref,
+                    uid
+                )
+            )
 
         }
         Timber.d("workMedia: $workMedia")
@@ -63,7 +68,7 @@ class UserProfileViewModel @Inject constructor(
         }
     }
 
-    override fun openService(service: com.computerwizards.android.model.Service) {}
+    override fun openService(service: Service) {}
 
     fun addToLike(userId: String) {
 

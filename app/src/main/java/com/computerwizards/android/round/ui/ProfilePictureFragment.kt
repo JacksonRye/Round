@@ -27,7 +27,8 @@ class ProfilePictureFragment : DaggerFragment() {
 
     private val viewModel: ProfilePictureViewModel by viewModels { viewModelFactory }
 
-    private val dataBindingComponent: DataBindingComponent = FragmentDataBindingComponent(this)
+    private val dataBindingComponent: DataBindingComponent
+            by lazy { FragmentDataBindingComponent(requireContext()) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

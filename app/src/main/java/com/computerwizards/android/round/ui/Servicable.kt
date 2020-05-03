@@ -1,8 +1,8 @@
 package com.computerwizards.android.round.ui
 
-import com.computerwizards.android.model.Service
+import com.computerwizards.android.round.model.Service
 
 interface Servicable {
 
-    fun openService(service: com.computerwizards.android.model.Service)
+    fun openService(service: Service)
 }

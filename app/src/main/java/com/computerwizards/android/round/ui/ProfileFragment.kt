@@ -39,8 +39,8 @@ class ProfileFragment : DaggerFragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
 
-    private var dataBindingComponent: DataBindingComponent = FragmentDataBindingComponent(this)
-
+    private val dataBindingComponent: DataBindingComponent
+            by lazy { FragmentDataBindingComponent(requireContext()) }
     private val viewModel by viewModels<ProfileViewModel> { viewModelFactory }
 
     private lateinit var servicesRecyclerView: RecyclerView

@@ -1,4 +1,4 @@
-package com.computerwizards.android.model
+package com.computerwizards.android.round.model
 
 import com.google.firebase.storage.StorageReference
 

@@ -9,7 +9,7 @@
 
         <variable
             name="media"
-            type="com.computerwizards.android.model.WorkMedia" />
+            type="com.computerwizards.android.round.model.WorkMedia" />
         <!--        <variable-->
         <!--            name="imageRequestListener"-->
         <!--            type="com.bumptech.glide.request.RequestListener&lt;Drawable>" />-->

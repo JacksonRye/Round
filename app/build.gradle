@@ -46,6 +46,7 @@ android {
 }
 
 dependencies {
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.2.0'
@@ -55,41 +56,38 @@ dependencies {
 
     implementation 'com.google.guava:guava:27.0.1-android'
 
-//    implementation project(':shared')
-
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "androidx.fragment:fragment-ktx:$fragmentKtxVersion"
 
-    // Firestore (Kotlin)
-    implementation 'com.google.firebase:firebase-firestore-ktx:21.4.2'
-
-    // Storage
-    api 'com.google.firebase:firebase-storage-ktx:19.1.1'
-    implementation 'com.firebaseui:firebase-ui-storage:6.2.0'
-
-    // Firebase cloud functions
-    implementation 'com.google.firebase:firebase-functions-ktx:19.0.2'
-
-    // Timber
-    api 'com.jakewharton.timber:timber:4.7.1'
-
-
-
-
-
-    // FCM
+    // Firebase
     implementation 'com.google.firebase:firebase-messaging:20.1.5'
     implementation 'com.google.firebase:firebase-iid:20.1.5'
+    implementation 'com.google.firebase:firebase-auth:19.3.0'
+    implementation 'com.google.android.gms:play-services-auth:18.0.0'
+    implementation 'com.google.firebase:firebase-storage-ktx:19.1.1'
+    implementation 'com.google.firebase:firebase-firestore-ktx:21.4.2'
+    implementation 'com.firebaseui:firebase-ui-storage:6.2.0'
+
+    implementation 'com.google.firebase:firebase-functions-ktx:19.0.2'
+
+
+    implementation 'com.jakewharton.timber:timber:4.7.1'
+
+
+
+
+    // Dagger
+    implementation "com.google.dagger:dagger:$daggerVersion"
+    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
+    implementation "com.google.dagger:dagger-android-support:$daggerVersion"
+    kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
+
+
 
     // Glide
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     kapt 'com.github.bumptech.glide:compiler:4.11.0'
-
-
-    // Other Firebase/Play services deps
-    api('com.google.firebase:firebase-auth:19.3.0')
-    implementation 'com.google.android.gms:play-services-auth:18.0.0'
 
     // FirebaseUI (for authentication)
     implementation 'com.firebaseui:firebase-ui-auth:6.2.0'
@@ -117,11 +115,7 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
 
-    // Dagger
-    implementation "com.google.dagger:dagger:$daggerVersion"
-    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
-    implementation "com.google.dagger:dagger-android-support:$daggerVersion"
-    kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
+
 
 
     // Third-party libraries

@@ -1,6 +1,6 @@
 package com.computerwizards.android.round.di
 
-import com.computerwizards.android.model.User
+import com.computerwizards.android.round.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -22,10 +22,10 @@ class ApplicationModule {
 
 
     @Provides
-    fun provideUser(): com.computerwizards.android.model.User {
-        val fireUser = FirebaseAuth.getInstance().currentUser ?: return com.computerwizards.android.model.User()
+    fun provideUser(): User {
+        val fireUser = FirebaseAuth.getInstance().currentUser ?: return User()
 
-        return com.computerwizards.android.model.User(fireUser)
+        return User(fireUser)
     }
 
     @Singleton

@@ -3,8 +3,8 @@ package com.computerwizards.android.round.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.computerwizards.android.model.Service
-import com.computerwizards.android.model.User
+import com.computerwizards.android.round.model.Service
+import com.computerwizards.android.round.model.User
 import com.computerwizards.android.round.utils.Event
 import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.tasks.OnCompleteListener
@@ -57,8 +57,8 @@ class HomeViewModel @Inject constructor(
 
     val serviceQuery: Query = firestore.collection("services")
 
-    private val _openServiceEvent = MutableLiveData<Event<com.computerwizards.android.model.Service>>()
-    val openServiceEvent: LiveData<Event<com.computerwizards.android.model.Service>> = _openServiceEvent
+    private val _openServiceEvent = MutableLiveData<Event<Service>>()
+    val openServiceEvent: LiveData<Event<Service>> = _openServiceEvent
 
     private val _userClickedEvent = MutableLiveData<Event<String>>()
     val userClickedEvent: LiveData<Event<String>> = _userClickedEvent
@@ -81,11 +81,11 @@ class HomeViewModel @Inject constructor(
         if (user != null) {
             usersDocRef = firestore.collection("users").document(user.uid)
 
-            createUser(com.computerwizards.android.model.User(user))
+            createUser(User(user))
         }
     }
 
-    private fun createUser(user: com.computerwizards.android.model.User): Task<Void> {
+    private fun createUser(user: User): Task<Void> {
 
         return firestore.runTransaction { transaction ->
 
@@ -103,7 +103,7 @@ class HomeViewModel @Inject constructor(
         _userClickedEvent.value = Event(userId)
     }
 
-    override fun openService(service: com.computerwizards.android.model.Service) {
+    override fun openService(service: Service) {
         Timber.d("InstanceId: ${provideFirebaseInstanceId()}")
 
         _openServiceEvent.value =

@@ -12,6 +12,7 @@ abstract class FireAdapter<VH : RecyclerView.ViewHolder>(private var query: Quer
 
     private val snapshots = ArrayList<DocumentSnapshot>()
 
+
     override fun onEvent(documentSnapshots: QuerySnapshot?, e: FirebaseFirestoreException?) {
         if (e != null) {
             Timber.w("onEvent:error: $e")
@@ -25,7 +26,7 @@ abstract class FireAdapter<VH : RecyclerView.ViewHolder>(private var query: Quer
         }
 
         // Dispatch event
-        Timber.d("onEvent:numChanges:" + documentSnapshots.documentChanges.size)
+        Timber.d("onEvent:numChanges:%s", documentSnapshots.documentChanges.size)
         for (change in documentSnapshots.documentChanges) {
             when (change.type) {
                 DocumentChange.Type.ADDED -> onDocumentAdded(change)
