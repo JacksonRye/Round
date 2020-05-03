@@ -10,7 +10,6 @@ import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
@@ -30,6 +29,8 @@ import javax.inject.Inject
 
 class UserProfileFragment : DaggerFragment() {
 
+    private lateinit var binding: UserProfileFragmentBinding
+
     private lateinit var servicesAdapter: ServiceAdapter
 
     @Inject
@@ -43,7 +44,9 @@ class UserProfileFragment : DaggerFragment() {
 
     private lateinit var serviceRecyclerView: RecyclerView
 
-    var dataBindingComponent: DataBindingComponent = FragmentDataBindingComponent(this)
+    private lateinit var userUid: String
+
+    private var dataBindingComponent: DataBindingComponent = FragmentDataBindingComponent(this)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,13 +54,15 @@ class UserProfileFragment : DaggerFragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        if (args.userUid == viewModel.loggedInUser.uid) {
+        userUid = args.userUid
+
+        if (userUid == viewModel.loggedInUser.uid) {
             val action = UserProfileFragmentDirections.showLoggedInProfile()
             findNavController().navigate(action)
         }
 
 
-        val binding = DataBindingUtil.inflate<UserProfileFragmentBinding>(
+        binding = DataBindingUtil.inflate<UserProfileFragmentBinding>(
             inflater,
             R.layout.user_profile_fragment,
             container,
@@ -70,11 +75,12 @@ class UserProfileFragment : DaggerFragment() {
             }
 
             lifecycleOwner = viewLifecycleOwner
+
         }
 
         setupViewModel()
 
-        viewModel.uid = args.userUid
+        viewModel.uid = userUid
 
         binding.viewModel = viewModel
 
@@ -106,31 +112,30 @@ class UserProfileFragment : DaggerFragment() {
         // Make sure we don't wait longer than a second for the image request
         postponeEnterTransition(1, TimeUnit.SECONDS)
 
-        binding.userProfile = viewModel.userProfile
-
-        photoRecyclerView = binding.photoRecyclerView
-        serviceRecyclerView = binding.servicesRecyclerView
-
-
         return binding.root
     }
 
     private fun setupViewModel() {
-        viewModel.getProfileUser(args.userUid)
-        viewModel.loggedInUserLikes(args.userUid)
-        viewModel.getPhotos(args.userUid)
+        viewModel.getProfileUser(userUid)
+        viewModel.loggedInUserLikes(userUid)
+        viewModel.getPhotos(userUid)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        photoRecyclerView = binding.photoRecyclerView
+        serviceRecyclerView = binding.servicesRecyclerView
+
         val photoAdapter = MediaAdapter(dataBindingComponent, null)
 
         photoRecyclerView.adapter = photoAdapter
 
-        servicesAdapter = object : ServiceAdapter(getService(args.userUid), viewModel) {}
+        servicesAdapter = object : ServiceAdapter(getService(userUid), viewModel) {}
 
         serviceRecyclerView.adapter = servicesAdapter
+
+
     }
 
     override fun onStart() {

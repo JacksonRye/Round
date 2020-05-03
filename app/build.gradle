@@ -67,8 +67,11 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-storage:6.2.0'
 
     // Firebase cloud functions
-//    implementation 'com.google.firebase:firebase-functions:19.0.2'
     implementation 'com.google.firebase:firebase-functions-ktx:19.0.2'
+
+    // Timber
+    implementation 'com.jakewharton.timber:timber:4.7.1'
+
 
 
 

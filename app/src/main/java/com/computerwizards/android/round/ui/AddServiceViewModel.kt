@@ -1,6 +1,5 @@
 package com.computerwizards.android.round.ui
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,6 +8,7 @@ import com.computerwizards.android.round.model.User
 import com.computerwizards.android.round.utils.Event
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.FirebaseFirestore
+import timber.log.Timber
 import javax.inject.Inject
 
 class AddServiceViewModel @Inject constructor(
@@ -20,7 +20,7 @@ class AddServiceViewModel @Inject constructor(
 //    val selectedServiceRef = firestore.collection("services").document()
 
     init {
-        Log.d(TAG, "$user")
+        Timber.d("$user")
     }
 
 

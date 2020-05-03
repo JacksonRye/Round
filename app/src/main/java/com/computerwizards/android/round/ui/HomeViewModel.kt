@@ -1,6 +1,5 @@
 package com.computerwizards.android.round.ui
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,6 +15,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.storage.FirebaseStorage
+import timber.log.Timber
 import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(
@@ -33,14 +33,14 @@ class HomeViewModel @Inject constructor(
         FirebaseInstanceId.getInstance().instanceId
             .addOnCompleteListener(OnCompleteListener { task ->
                 if (!task.isSuccessful) {
-                    Log.w(TAG, "getInstancefailed", task.exception)
+                    Timber.w("getInstancefailed: ${task.exception}")
                     return@OnCompleteListener
                 }
 
                 // Get new Instance ID token
                 val token = task.result?.token
                 val msg = "InstanceID Token: {$token}"
-                Log.d(TAG, msg)
+                Timber.d(msg)
 
                 if (token != null) {
                     saveToken(token)
@@ -98,13 +98,13 @@ class HomeViewModel @Inject constructor(
     }
 
     fun onClicked(userId: String) {
-        Log.d(TAG, "InstanceId: ${provideFirebaseInstanceId()}")
+        Timber.d("InstanceId: ${provideFirebaseInstanceId()}")
 
         _userClickedEvent.value = Event(userId)
     }
 
     override fun openService(service: Service) {
-        Log.d(TAG, "InstanceId: ${provideFirebaseInstanceId()}")
+        Timber.d("InstanceId: ${provideFirebaseInstanceId()}")
 
         _openServiceEvent.value =
             Event(service)

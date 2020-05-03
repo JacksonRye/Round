@@ -54,3 +54,27 @@ export const updateDp = functions.https.onCall(async (data, context) => {
     }
 
 })
+
+export const getUser = functions.https.onCall(async (data, context) => {
+
+    try {
+        
+        const uid = data.uid
+
+        const user = await admin.firestore().doc(`users/${uid}`).get()
+
+        console.log("user:data", user.data());
+        
+
+        return user.data()
+
+
+    } catch (error) {
+        console.log(error)
+        
+    }
+})
+
+// export const saveUser = functions.https.onCall(async(data, context) => {
+    
+// })

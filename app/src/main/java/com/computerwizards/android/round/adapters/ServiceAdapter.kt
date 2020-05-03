@@ -14,7 +14,7 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
 
 open class ServiceAdapter(query: Query, private val viewModel: Servicable) :
-    FireAdapter<ServiceAdapter.ViewHolder>(query), ListAdapter {
+    FireAdapter<ServiceAdapter.ViewHolder>(query) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)

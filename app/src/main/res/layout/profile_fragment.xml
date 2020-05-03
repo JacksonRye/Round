@@ -23,6 +23,10 @@
             name="imageRequestListener"
             type="com.bumptech.glide.request.RequestListener&lt;Drawable>" />
 
+        <variable
+            name="user"
+            type="com.computerwizards.android.round.model.User" />
+
 
     </data>
 
@@ -134,6 +138,7 @@
                         android:layout_width="80dp"
                         android:layout_height="80dp"
                         android:onClick="@{() -> viewModel.openProfilePicture()}"
+                        app:imageUrl="@{user.displayImageUrl}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.498"
                         app:layout_constraintStart_toStartOf="parent"
@@ -145,7 +150,7 @@
                         style="@style/TextAppearance.AppCompat.Headline"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@{viewModel.user.displayName}"
+                        android:text="@{user.displayName}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.498"
@@ -173,6 +178,7 @@
                     <ImageView
                         android:id="@+id/small_image_view"
                         android:layout_height="40dp"
+                        app:imageUrl="@{user.displayImageUrl}"
                         android:onClick="@{() -> viewModel.onProfileImageClicked()}"
                         android:visibility="@{profileImageClicked ? View.GONE : View.VISIBLE}"
                         android:layout_width="40dp"

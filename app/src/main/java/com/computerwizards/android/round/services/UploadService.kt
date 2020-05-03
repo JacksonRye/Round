@@ -5,7 +5,6 @@ import android.content.IntentFilter
 import android.net.Uri
 import android.os.Build
 import android.os.IBinder
-import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.computerwizards.android.round.R
@@ -17,6 +16,7 @@ import com.google.firebase.functions.FirebaseFunctions
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import dagger.android.AndroidInjection
+import timber.log.Timber
 import javax.inject.Inject
 
 class UploadService : MyBaseTaskService() {
@@ -56,7 +56,7 @@ class UploadService : MyBaseTaskService() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
-        Log.d(TAG, "onStartCommand:$intent:$startId")
+        Timber.d("onStartCommand:$intent:$startId")
         if (intent != null) {
             if (ACTION_UPLOAD == intent.action) {
                 val fileUri = intent.getParcelableExtra<Uri>(EXTRA_FILE_URI)
@@ -79,7 +79,7 @@ class UploadService : MyBaseTaskService() {
     }
 
     private fun uploadFromUri(fileUri: Uri, isProfilePicture: Boolean = false) {
-        Log.d(TAG, "uploadFromUri:src:" + fileUri.toString())
+        Timber.d("uploadFromUri:src:" + fileUri.toString())
 
         taskStarted()
         showProgressNotification(getString(R.string.progress_uploading), 0, 0)
@@ -93,10 +93,10 @@ class UploadService : MyBaseTaskService() {
             val photoRef = storageRef.child(mediaPath)
                 .child(it)
 
-            Log.d(TAG, "photoRef: $photoRef")
+            Timber.d("photoRef: $photoRef")
 
             // Upload file to Firebase Storage
-            Log.d(TAG, "uploadFromUri:dst:" + photoRef.path)
+            Timber.d("uploadFromUri:dst:" + photoRef.path)
             photoRef.putFile(fileUri).addOnProgressListener { taskSnapshot ->
                 showProgressNotification(
                     getString(R.string.progress_uploading),
@@ -109,13 +109,13 @@ class UploadService : MyBaseTaskService() {
                     throw task.exception!!
                 }
 
-                Log.d(TAG, "uploadFromUri: upload success")
+                Timber.d("uploadFromUri: upload success")
 
                 // Request the public download URL
                 photoRef.downloadUrl
             }.addOnSuccessListener { downloadUri ->
                 // Upload succeeded
-                Log.d(TAG, "uploadFromUri: getDownloadUri success")
+                Timber.d("uploadFromUri: getDownloadUri success")
 
                 // [START_EXCLUDE]
                 broadcastUploadFinished(downloadUri, fileUri)
@@ -133,7 +133,7 @@ class UploadService : MyBaseTaskService() {
                 // [END_EXCLUDE]
             }.addOnFailureListener { exception ->
                 // Upload failed
-                Log.w(TAG, "uploadFromUri:onFailure", exception)
+                Timber.w("uploadFromUri:onFailure:$exception")
 
                 broadcastUploadFinished(null, fileUri)
                 showUploadFinishedNotification(null, fileUri)

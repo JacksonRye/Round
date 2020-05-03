@@ -7,7 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -21,6 +20,7 @@ import com.computerwizards.android.round.services.DownloadService
 import com.computerwizards.android.round.services.UploadService
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.activity_main.*
+import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
 
         broadcastReciever = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent) {
-                Log.d(TAG, "onRecieve:$intent")
+                Timber.d("onRecieve:$intent")
                 hideProgressBar()
 
                 when (intent.action) {
@@ -123,7 +123,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        Log.d(TAG, "onActivityResult:$requestCode:$resultCode:$data")
+        Timber.d("onActivityResult:$requestCode:$resultCode:$data")
         if (requestCode == RC_TAKE_PICTURE) {
             if (resultCode == Activity.RESULT_OK) {
                 fileUri = data?.data
@@ -131,7 +131,7 @@ class MainActivity : AppCompatActivity() {
                 if (fileUri != null) {
                     uploadFromUri(fileUri!!)
                 } else {
-                    Log.w(TAG, "File URI is null")
+                    Timber.w("File URI is null")
                 }
             } else {
                 Toast.makeText(this, "Taking picture failed.", Toast.LENGTH_SHORT).show()
@@ -140,7 +140,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun uploadFromUri(uploadUri: Uri) {
-        Log.d(TAG, "uploadFromUri:src: $uploadUri")
+        Timber.d("uploadFromUri:src: $uploadUri")
 
         // Save the File URI
         fileUri = uploadUri
@@ -177,7 +177,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun launchCamera() {
-        Log.d(TAG, "launchCamera")
+        Timber.d("launchCamera")
 
         // Pick an image from storage
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)

@@ -25,9 +25,9 @@ class AddServiceDialogFragment : BottomSheetDialogFragment() {
 
     lateinit var query: Query
 
-    lateinit var adapter: ServiceAdapter
+    private lateinit var adapter: ServiceAdapter
 
-    lateinit var recyclerView: RecyclerView
+    private lateinit var recyclerView: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater,

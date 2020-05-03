@@ -1,6 +1,5 @@
 package com.computerwizards.android.round.ui
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
@@ -8,16 +7,18 @@ import androidx.lifecycle.ViewModel
 import com.computerwizards.android.round.model.Service
 import com.computerwizards.android.round.model.User
 import com.computerwizards.android.round.model.WorkMedia
+import com.computerwizards.android.round.repository.UserRepository
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import timber.log.Timber
 import javax.inject.Inject
 
 class UserProfileViewModel @Inject constructor(
     val firestore: FirebaseFirestore,
     val loggedInUser: User,
-    val storage: FirebaseStorage
+    val storage: FirebaseStorage,
+    val userRepository: UserRepository
 ) : ViewModel(), Servicable {
 
     lateinit var uid: String
@@ -39,33 +40,34 @@ class UserProfileViewModel @Inject constructor(
             workMedia.add(WorkMedia(ref, uid))
 
         }
-        Log.d(TAG, "workMedia: $workMedia")
+        Timber.d("workMedia: $workMedia")
         workMedia.toList()
     }
 
     fun getPhotos(uid: String) {
         storage.reference.child("photos/$uid").listAll().addOnSuccessListener { listResult ->
-            Log.d(TAG, "Storage Refs: ${listResult.items}")
+            Timber.d("Storage Refs: ${listResult.items}")
             _photoRefs.value = listResult.items.toMutableList()
         }
     }
 
 
     fun getProfileUser(currentProfileId: String) {
-        firestore.collection("users").document(currentProfileId)
-            .get().addOnSuccessListener { documentSnapshot ->
-                val userProfile = documentSnapshot.toObject<User>()!!
-                Log.d("TAG", "getProfileUser: $userProfile")
-                this._userProfile.value = userProfile
-                Log.d("TAG", "_userProfile: ${_userProfile.value}")
+        userRepository.getUserFromCloud(currentProfileId).addOnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Timber.e("getProfileUser: ${task.exception}")
             }
+            _userProfile.value = task.result
+            Timber.d("getProfileUser: ${_userProfile.value}")
+
+        }
     }
 
     override fun openService(service: Service) {}
 
     fun addToLike(userId: String) {
 
-        Log.d(TAG, "addToLike:LoggedInUsersLike: ${userLiked.value}")
+        Timber.d("addToLike:LoggedInUsersLike: ${userLiked.value}")
 
         loggedInUserLikes(userId)
 

@@ -3,7 +3,6 @@ package com.computerwizards.android.round.ui
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -17,6 +16,7 @@ import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
 import dagger.android.support.DaggerFragment
+import timber.log.Timber
 import javax.inject.Inject
 
 class HomeFragment : DaggerFragment() {
@@ -26,9 +26,9 @@ class HomeFragment : DaggerFragment() {
 
     val viewModel by viewModels<HomeViewModel> { viewModelFactory }
 
-    lateinit var recyclerView: RecyclerView
+    private lateinit var recyclerView: RecyclerView
 
-    lateinit var adapter: ServiceAdapter
+    private lateinit var adapter: ServiceAdapter
 
 
     override fun onCreateView(
@@ -83,7 +83,7 @@ class HomeFragment : DaggerFragment() {
     private fun setupNavigation() {
         viewModel.openServiceEvent.observe(viewLifecycleOwner,
             EventObserver {
-                Log.d(TAG, "setupNav: $it")
+                Timber.d("setupNav: $it")
 
                 val action = HomeFragmentDirections.showProviders(it.uid!!)
                 findNavController().navigate(action)

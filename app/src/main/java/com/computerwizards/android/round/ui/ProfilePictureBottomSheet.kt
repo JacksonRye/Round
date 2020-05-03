@@ -8,7 +8,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +19,7 @@ import com.computerwizards.android.round.services.UploadService
 import com.computerwizards.android.round.utils.EventObserver
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.android.support.AndroidSupportInjection
+import timber.log.Timber
 import java.util.*
 import javax.inject.Inject
 
@@ -53,7 +53,7 @@ class ProfilePictureBottomSheet : BottomSheetDialogFragment() {
 
         broadcastReciever = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent) {
-                Log.d(TAG, "onRecieve:$intent")
+                Timber.d("onRecieve:$intent")
 //                hideProgressBar()
 
                 when (intent.action) {
@@ -142,7 +142,7 @@ class ProfilePictureBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun selectImage() {
-        Log.d(TAG, "launchCamera")
+        Timber.d("launchCamera")
 
         // Pick an image from storage
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
@@ -162,11 +162,11 @@ class ProfilePictureBottomSheet : BottomSheetDialogFragment() {
         when (requestCode) {
             RC_TAKE_PHOTO -> if (resultCode == Activity.RESULT_OK) {
                 selectedImage = data?.data
-                Log.d(TAG, "RC_TAKE_PHOTO: ${selectedImage.toString()}")
+                Timber.d("RC_TAKE_PHOTO: ${selectedImage.toString()}")
             }
             RC_SELECT_IMAGE -> if (resultCode == Activity.RESULT_OK) {
                 selectedImage = data?.data
-                Log.d(TAG, "RC_SELECT_IMAGE: ${selectedImage.toString()}")
+                Timber.d("RC_SELECT_IMAGE: ${selectedImage.toString()}")
             }
         }
         selectedImage?.let {
@@ -177,7 +177,7 @@ class ProfilePictureBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun uploadFromUri(uploadUri: Uri) {
-        Log.d(TAG, "uploadFromUri:src: $uploadUri")
+        Timber.d("uploadFromUri:src: $uploadUri")
 
 
         // Save the File URI

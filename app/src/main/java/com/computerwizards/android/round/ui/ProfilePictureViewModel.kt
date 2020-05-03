@@ -6,14 +6,25 @@ import androidx.lifecycle.ViewModel
 import com.computerwizards.android.round.model.User
 import com.computerwizards.android.round.repository.UserRepository
 import com.computerwizards.android.round.utils.Event
+import timber.log.Timber
 import javax.inject.Inject
 
 class ProfilePictureViewModel @Inject constructor(
     val user: User,
-    val userRepository: UserRepository
+    userRepository: UserRepository
 ) : ViewModel() {
 
-    val liveDataUser = userRepository.getUser(user.uid!!)
+    init {
+        userRepository.getUserFromCloud(user.uid!!).addOnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Timber.e("liveDataUser: ${task.exception}")
+            }
+            _liveDataUser.value = task.result
+        }
+    }
+
+    private val _liveDataUser = MutableLiveData<User>()
+    val liveDataUser: LiveData<User> = _liveDataUser
 
     private val _openCameraEvent = MutableLiveData<Event<Unit>>()
     val openCameraEvent: LiveData<Event<Unit>> = _openCameraEvent

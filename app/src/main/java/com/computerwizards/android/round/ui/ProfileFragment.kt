@@ -5,13 +5,13 @@ import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.transition.TransitionInflater
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -26,20 +26,36 @@ import com.computerwizards.android.round.binding.FragmentDataBindingComponent
 import com.computerwizards.android.round.databinding.ProfileFragmentBinding
 import com.computerwizards.android.round.utils.EventObserver
 import com.google.android.material.appbar.AppBarLayout
+import com.google.firebase.firestore.Query
+import dagger.android.support.DaggerFragment
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
-class ProfileFragment : ListFragment() {
+class ProfileFragment : DaggerFragment() {
 
-    private lateinit var photoRecyclerView: RecyclerView
+
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
 
     var dataBindingComponent: DataBindingComponent = FragmentDataBindingComponent(this)
 
-    override val viewModel by viewModels<ProfileViewModel> { viewModelFactory }
+    private val viewModel by viewModels<ProfileViewModel> { viewModelFactory }
+
+    private lateinit var servicesRecyclerView: RecyclerView
+
+    private lateinit var photoRecyclerView: RecyclerView
+
+
+    private lateinit var serviceAdapter: ServiceAdapter
+
+
+    private lateinit var query: Query
+
+    private lateinit var binding: ProfileFragmentBinding
+
 
 
     override fun onCreateView(
@@ -47,7 +63,7 @@ class ProfileFragment : ListFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = DataBindingUtil.inflate<ProfileFragmentBinding>(
+        binding = DataBindingUtil.inflate<ProfileFragmentBinding>(
             inflater,
             R.layout.profile_fragment,
             container,
@@ -55,7 +71,6 @@ class ProfileFragment : ListFragment() {
             dataBindingComponent
         )
 
-        this.binding = binding
 
         sharedElementEnterTransition =
             TransitionInflater.from(context).inflateTransition(R.transition.move)
@@ -85,6 +100,8 @@ class ProfileFragment : ListFragment() {
         // Make sure we don't wait longer than a second for the image request
         postponeEnterTransition(1, TimeUnit.SECONDS)
 
+        setupViewModel()
+
         binding.viewModel = viewModel
 
         servicesRecyclerView = binding.servicesRecyclerView
@@ -104,15 +121,21 @@ class ProfileFragment : ListFragment() {
         return binding.root
     }
 
+    private fun setupViewModel() {
+        viewModel.liveDataUser.observe(viewLifecycleOwner, Observer { user ->
+            binding.user = user
+        })
+    }
+
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
         query = viewModel.myServicesQuery
 
-        adapter = object : ServiceAdapter(query, viewModel) {}
+        serviceAdapter = object : ServiceAdapter(query, viewModel) {}
 
-        servicesRecyclerView.adapter = adapter as ServiceAdapter
+        servicesRecyclerView.adapter = serviceAdapter
 
         photoRecyclerView.adapter = MediaAdapter(dataBindingComponent, null)
 
@@ -125,13 +148,25 @@ class ProfileFragment : ListFragment() {
 
     private fun setupNavigation() {
         viewModel.openAddServiceEvent.observe(viewLifecycleOwner, EventObserver {
-            Log.d(TAG, "observing openAddServiceEvent")
+            Timber.d("observing openAddServiceEvent")
             addServiceDialogFragment.show(parentFragmentManager, "ProfileFragment")
         })
         viewModel.openProfilePictureEvent.observe(viewLifecycleOwner, EventObserver {
             val action = ProfileFragmentDirections.viewProfilePicture()
             findNavController().navigate(action)
         })
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        serviceAdapter.startListening()
+    }
+
+    override fun onStop() {
+        super.onStop()
+
+        serviceAdapter.stopListening()
     }
 
     companion object {

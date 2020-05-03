@@ -1,11 +1,11 @@
 package com.computerwizards.android.round.utils
 
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
+import timber.log.Timber
 
 /**
  * Transforms static java function Snackbar.make() to an extension function on View.
@@ -25,7 +25,7 @@ fun View.setupSnackbar(
 
     snackbarEvent.observe(lifecycleOwner, Observer { event ->
         event.getContentIfNotHandled()?.let {
-            Log.d("ViewExt", "it")
+            Timber.d("ViewExt: $it")
             showSnackbar(it, timeLength)
         }
     })

@@ -7,7 +7,6 @@ data class User(
     var displayName: String? = "",
     var email: String? = "",
     var displayImageUrl: String? = null,
-//    var profilePictureStorageRef: String? = null,
     var about: String? = "",
     var instanceToken: String? = ""
 ) {
@@ -18,4 +17,13 @@ data class User(
         user.email
     )
 
+    constructor(map: HashMap<*, *>) : this(
+
+        uid = map["uid"] as String?,
+        email = map["email"] as String?,
+        instanceToken = map["instanceToken"] as String?,
+        about = map["about"] as String?,
+        displayImageUrl = map["displayImageUrl"] as String?,
+        displayName = map["displayName"] as String?
+    )
 }

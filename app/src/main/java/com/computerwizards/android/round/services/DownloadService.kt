@@ -4,13 +4,13 @@ import android.app.Service
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.IBinder
-import android.util.Log
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.computerwizards.android.round.R
 import com.computerwizards.android.round.ui.MainActivity
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
+import timber.log.Timber
 
 class DownloadService : MyBaseTaskService() {
 
@@ -29,7 +29,7 @@ class DownloadService : MyBaseTaskService() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
-        Log.d(TAG, "onStartCommand:$intent:$startId")
+        Timber.d("onStartCommand:$intent:$startId")
 
         if (intent != null) {
             if (ACTION_DOWNLOAD == intent.action) {
@@ -43,7 +43,7 @@ class DownloadService : MyBaseTaskService() {
     }
 
     private fun downloadFromPath(downloadPath: String) {
-        Log.d(TAG, "downloadFromPath:$downloadPath")
+        Timber.d("downloadFromPath:$downloadPath")
 
         // Mark task started
         taskStarted()
@@ -70,7 +70,7 @@ class DownloadService : MyBaseTaskService() {
             // Close the stream at the end of the Task
             inputStream.close()
         }.addOnSuccessListener { taskSnapshot ->
-            Log.d(TAG, "download:SUCCESS")
+            Timber.d("download:SUCCESS")
 
             // Send success broadcast with number of bytes downloaded
             broadcastDownloadFinished(downloadPath, taskSnapshot.totalByteCount)
@@ -79,7 +79,7 @@ class DownloadService : MyBaseTaskService() {
             // Mark task completed
             taskCompleted()
         }.addOnFailureListener { exception ->
-            Log.w(TAG, "download:Failure", exception)
+            Timber.w("download:Failure", exception)
 
             // Send failure broadcast
             broadcastDownloadFinished(downloadPath, -1)

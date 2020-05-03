@@ -6,10 +6,10 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.lifecycle.LifecycleService
 import com.computerwizards.android.round.R
+import timber.log.Timber
 
 /**
  * Base class for Services that keep track of the number of active jobs and self-stop when the
@@ -33,12 +33,12 @@ abstract class MyBaseTaskService : LifecycleService() {
 
     @Synchronized
     private fun changeNumberOfTasks(delta: Int) {
-        Log.d(TAG, "changeNumberOfTasks:$numTasks:$delta")
+        Timber.d("changeNumberOfTasks:$numTasks:$delta")
         numTasks += delta
 
         // If there are no tasks left, stop the service
         if (numTasks <= 0) {
-            Log.d(TAG, "stopping")
+            Timber.d("stopping")
             stopSelf()
         }
     }
