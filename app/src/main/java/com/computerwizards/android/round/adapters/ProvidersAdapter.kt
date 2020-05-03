@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.computerwizards.android.round.databinding.ItemUserBinding
-import com.computerwizards.android.round.model.User
+import com.computerwizards.android.model.User
 import com.computerwizards.android.round.ui.HomeViewModel
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.toObject
@@ -17,7 +17,7 @@ open class ProvidersAdapter(query: Query, private val viewModel: HomeViewModel) 
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = getSnapshot(position).toObject<User>()
+        val item = getSnapshot(position).toObject<com.computerwizards.android.model.User>()
 
         item?.let { user ->
             holder.bind(user, viewModel)
@@ -28,7 +28,7 @@ open class ProvidersAdapter(query: Query, private val viewModel: HomeViewModel) 
     class ViewHolder private constructor(val binding: ItemUserBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(user: User, viewModel: HomeViewModel) {
+        fun bind(user: com.computerwizards.android.model.User, viewModel: HomeViewModel) {
             binding.viewModel = viewModel
             binding.user = user
             binding.executePendingBindings()

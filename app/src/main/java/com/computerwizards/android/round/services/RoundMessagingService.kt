@@ -12,7 +12,7 @@ import androidx.work.OneTimeWorkRequest
 import androidx.work.WorkManager
 import com.computerwizards.android.round.MyWorker
 import com.computerwizards.android.round.R
-import com.computerwizards.android.round.model.User
+import com.computerwizards.android.model.User
 import com.computerwizards.android.round.ui.MainActivity
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
@@ -24,7 +24,11 @@ import timber.log.Timber
 
 class RoundMessagingService : FirebaseMessagingService() {
 
-    val user = FirebaseAuth.getInstance().currentUser?.let { User(it) } ?: User()
+    val user = FirebaseAuth.getInstance().currentUser?.let {
+        com.computerwizards.android.model.User(
+            it
+        )
+    } ?: com.computerwizards.android.model.User()
 
     val firestore = Firebase.firestore
 

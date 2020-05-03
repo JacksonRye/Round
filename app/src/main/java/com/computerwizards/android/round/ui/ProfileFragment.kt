@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
@@ -40,7 +39,7 @@ class ProfileFragment : DaggerFragment() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
 
-    var dataBindingComponent: DataBindingComponent = FragmentDataBindingComponent(this)
+    private var dataBindingComponent: DataBindingComponent = FragmentDataBindingComponent(this)
 
     private val viewModel by viewModels<ProfileViewModel> { viewModelFactory }
 
@@ -55,7 +54,6 @@ class ProfileFragment : DaggerFragment() {
     private lateinit var query: Query
 
     private lateinit var binding: ProfileFragmentBinding
-
 
 
     override fun onCreateView(
@@ -100,7 +98,11 @@ class ProfileFragment : DaggerFragment() {
         // Make sure we don't wait longer than a second for the image request
         postponeEnterTransition(1, TimeUnit.SECONDS)
 
-        setupViewModel()
+
+//        viewModel.liveDataUser.observe(viewLifecycleOwner, Observer { user ->
+//            Timber.d("user: $user")
+//            binding.user = user
+//        })
 
         binding.viewModel = viewModel
 
@@ -119,12 +121,6 @@ class ProfileFragment : DaggerFragment() {
 
 
         return binding.root
-    }
-
-    private fun setupViewModel() {
-        viewModel.liveDataUser.observe(viewLifecycleOwner, Observer { user ->
-            binding.user = user
-        })
     }
 
 
@@ -168,11 +164,6 @@ class ProfileFragment : DaggerFragment() {
 
         serviceAdapter.stopListening()
     }
-
-    companion object {
-        private const val TAG = "ProfileFragment"
-    }
-
 
 }
 

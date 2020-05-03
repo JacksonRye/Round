@@ -10,7 +10,7 @@
 
         <variable
             name="service"
-            type="com.computerwizards.android.round.model.Service" />
+            type="com.computerwizards.android.model.Service" />
 
     </data>
 

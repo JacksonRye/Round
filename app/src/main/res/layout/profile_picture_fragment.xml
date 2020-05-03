@@ -11,7 +11,7 @@
 
         <variable
             name="databaseUser"
-            type="com.computerwizards.android.round.model.User" />
+            type="com.computerwizards.android.model.User" />
 
     </data>
 

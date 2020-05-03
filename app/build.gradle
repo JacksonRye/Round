@@ -55,6 +55,8 @@ dependencies {
 
     implementation 'com.google.guava:guava:27.0.1-android'
 
+//    implementation project(':shared')
+
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "androidx.fragment:fragment-ktx:$fragmentKtxVersion"
@@ -63,14 +65,14 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore-ktx:21.4.2'
 
     // Storage
-    implementation 'com.google.firebase:firebase-storage-ktx:19.1.1'
+    api 'com.google.firebase:firebase-storage-ktx:19.1.1'
     implementation 'com.firebaseui:firebase-ui-storage:6.2.0'
 
     // Firebase cloud functions
     implementation 'com.google.firebase:firebase-functions-ktx:19.0.2'
 
     // Timber
-    implementation 'com.jakewharton.timber:timber:4.7.1'
+    api 'com.jakewharton.timber:timber:4.7.1'
 
 
 
@@ -86,7 +88,7 @@ dependencies {
 
 
     // Other Firebase/Play services deps
-    implementation 'com.google.firebase:firebase-auth:19.3.0'
+    api('com.google.firebase:firebase-auth:19.3.0')
     implementation 'com.google.android.gms:play-services-auth:18.0.0'
 
     // FirebaseUI (for authentication)

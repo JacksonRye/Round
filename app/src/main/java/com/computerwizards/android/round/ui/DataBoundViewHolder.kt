@@ -1,4 +1,4 @@
-package com.computerwizards.android.round.adapters
+package com.computerwizards.android.round.ui
 
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView

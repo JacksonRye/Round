@@ -3,8 +3,8 @@ package com.computerwizards.android.round.ui
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.computerwizards.android.round.model.Service
-import com.computerwizards.android.round.model.User
+import com.computerwizards.android.model.Service
+import com.computerwizards.android.model.User
 import com.computerwizards.android.round.utils.Event
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.FirebaseFirestore
@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 class AddServiceViewModel @Inject constructor(
     val firestore: FirebaseFirestore
-    , val user: User?
+    , val user: com.computerwizards.android.model.User?
 ) : ViewModel(), Servicable {
 
 
@@ -32,11 +32,11 @@ class AddServiceViewModel @Inject constructor(
     val closeServiceEvent: LiveData<Event<Unit>> = _closeServiceEvent
 
 
-    override fun openService(service: Service) {
+    override fun openService(service: com.computerwizards.android.model.Service) {
         addService(service)
     }
 
-    private fun addService(service: Service): Task<Void> {
+    private fun addService(service: com.computerwizards.android.model.Service): Task<Void> {
         return firestore.runTransaction { transaction ->
 
             val selectedServiceRef = firestore.collection("services")

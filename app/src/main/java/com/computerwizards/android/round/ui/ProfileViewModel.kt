@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import com.computerwizards.android.round.model.Service
-import com.computerwizards.android.round.model.User
-import com.computerwizards.android.round.model.WorkMedia
+import com.computerwizards.android.model.Service
+import com.computerwizards.android.model.User
+import com.computerwizards.android.model.WorkMedia
 import com.computerwizards.android.round.repository.UserRepository
 import com.computerwizards.android.round.utils.Event
 import com.computerwizards.android.round.utils.getService
@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 class ProfileViewModel @Inject constructor(
     val firestore: FirebaseFirestore,
-    val user: User,
+    val user: com.computerwizards.android.model.User,
     val storage: FirebaseStorage,
     val userRepository: UserRepository
 ) :
@@ -27,20 +27,31 @@ class ProfileViewModel @Inject constructor(
     Servicable {
 
     init {
-        user.uid?.let { userRepository.getUserFromCloud(it) }
+        userRepository.getUserFromCloud(user.uid!!).addOnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Timber.e("init:getUserFromCloud: ${task.exception}")
+            }
+
+            _liveDataUser.value = task.result
+        }
 
         getPhotos()
     }
 
 
-    private val _liveDataUser = MutableLiveData<User>()
-    val liveDataUser: LiveData<User> = _liveDataUser
+    private val _liveDataUser = MutableLiveData<com.computerwizards.android.model.User>()
+    val liveDataUser: LiveData<com.computerwizards.android.model.User> = _liveDataUser
 
     private val _photoRefs = MutableLiveData<List<StorageReference>>()
-    val photoRefs: LiveData<List<WorkMedia>> = Transformations.map(_photoRefs) { storageRefs ->
-        val workMedia = mutableListOf<WorkMedia>()
+    val photoRefs: LiveData<List<com.computerwizards.android.model.WorkMedia>> = Transformations.map(_photoRefs) { storageRefs ->
+        val workMedia = mutableListOf<com.computerwizards.android.model.WorkMedia>()
         for (ref in storageRefs) {
-            workMedia.add(WorkMedia(ref, user.uid))
+            workMedia.add(
+                com.computerwizards.android.model.WorkMedia(
+                    ref,
+                    user.uid
+                )
+            )
         }
         Timber.d("workMedia: $workMedia")
         workMedia.toList()
@@ -63,7 +74,7 @@ class ProfileViewModel @Inject constructor(
 
     val myServicesQuery: Query = getService(user.uid!!)
 
-    override fun openService(service: Service) {
+    override fun openService(service: com.computerwizards.android.model.Service) {
     }
 
     fun openServicesDialog() {

@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.computerwizards.android.round.databinding.ItemServiceBinding
-import com.computerwizards.android.round.model.Service
+import com.computerwizards.android.model.Service
 import com.computerwizards.android.round.ui.ProfileViewModel
 import com.computerwizards.android.round.ui.Servicable
 import com.computerwizards.android.round.ui.ServiceOptionsDialogFragment
@@ -21,7 +21,7 @@ open class ServiceAdapter(query: Query, private val viewModel: Servicable) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = getSnapshot(position).toObject<Service>()
+        val item = getSnapshot(position).toObject<com.computerwizards.android.model.Service>()
 
         if (item != null) {
             holder.bind(item, viewModel)
@@ -33,7 +33,7 @@ open class ServiceAdapter(query: Query, private val viewModel: Servicable) :
         RecyclerView.ViewHolder(binding.root) {
 
 
-        fun bind(service: Service, viewModel: Servicable) {
+        fun bind(service: com.computerwizards.android.model.Service, viewModel: Servicable) {
 
             binding.viewModel = viewModel
             binding.service = service

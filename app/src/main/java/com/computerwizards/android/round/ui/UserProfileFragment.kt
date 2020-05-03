@@ -10,6 +10,7 @@ import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.RecyclerView
@@ -24,6 +25,7 @@ import com.computerwizards.android.round.binding.FragmentDataBindingComponent
 import com.computerwizards.android.round.databinding.UserProfileFragmentBinding
 import com.computerwizards.android.round.utils.getService
 import dagger.android.support.DaggerFragment
+import kotlinx.android.synthetic.main.profile_fragment.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 

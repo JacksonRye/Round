@@ -1,4 +1,4 @@
-package com.computerwizards.android.round.model
+package com.computerwizards.android.model
 
 import com.google.firebase.auth.FirebaseUser
 

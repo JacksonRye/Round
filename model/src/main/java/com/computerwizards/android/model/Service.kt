@@ -1,4 +1,4 @@
-package com.computerwizards.android.round.model
+package com.computerwizards.android.model
 
 data class Service(
     var name: String? = "",
