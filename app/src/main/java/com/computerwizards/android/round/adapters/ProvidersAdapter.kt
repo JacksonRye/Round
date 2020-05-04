@@ -24,7 +24,7 @@ class ProvidersAdapter(
             dataBindingComponent
         )
         binding.root.setOnClickListener {
-            binding.user.let {
+            binding.user?.let {
                 providerCallback?.invoke(it)
             }
         }

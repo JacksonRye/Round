@@ -23,7 +23,7 @@ class MediaAdapter(
             dataBindingComponent
         )
         binding.root.setOnClickListener {
-            binding.media.let {
+            binding.media?.let {
                 mediaCallback?.invoke(it)
 
             }

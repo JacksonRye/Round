@@ -17,5 +17,8 @@
     "firestore": {
       "port": 8080
     }
+  },
+  "storage": {
+    "rules": "storage.rules"
   }
 }

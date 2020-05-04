@@ -22,7 +22,7 @@
             android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view"
+                android:id="@+id/providerRecyclerView"
                 app:listData="@{viewModel.serviceProviders}"
                 tools:listitem="@layout/item_user"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

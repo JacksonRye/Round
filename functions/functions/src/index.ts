@@ -47,7 +47,9 @@ export const updateDp = functions.https.onCall(async (data, context) => {
 
         return admin.firestore().doc(`users/${uid}`).set({
             displayImageUrl: imageUrl
-        }, { merge: true })
+        }, {
+            merge: true
+        })
 
     } catch (err) {
         console.log(err)
@@ -58,23 +60,89 @@ export const updateDp = functions.https.onCall(async (data, context) => {
 export const getUser = functions.https.onCall(async (data, context) => {
 
     try {
-        
+
         const uid = data.uid
 
         const user = await admin.firestore().doc(`users/${uid}`).get()
 
         console.log("user:data", user.data());
-        
+
 
         return user.data()
 
 
     } catch (error) {
         console.log(error)
-        
+
     }
 })
 
-// export const saveUser = functions.https.onCall(async(data, context) => {
-    
-// })
+export const getProviders = functions.https.onCall(async (data, context) => {
+    try {
+        const serviceUid = data.serviceUid
+
+        const providerSnapshot = await admin.firestore().collection(`services/${serviceUid}/providers`).get()
+
+        const providerDoc = providerSnapshot.docs.map(doc => doc.data())
+
+        console.log("providerDoc", providerDoc);
+
+        return providerDoc
+
+    } catch (error) {
+        console.log(error);
+    }
+
+})
+
+// Bug, Error with function
+
+export const addService = functions.https.onCall(async (data, context) => {
+    try {
+        const userUid = context.auth.uid
+
+        console.log("userUid", userUid);
+
+
+        const serviceUid = data.serviceUid
+
+        console.log("serviceUid", serviceUid);
+
+
+        const promises = []
+
+        const services = admin.firestore()
+            .collection(`services/${serviceUid}/providers`).add({
+                userUid: userUid
+            })
+
+        promises.push(services)
+
+        const users = admin.firestore()
+            .collection(`users/${userUid}/services/`).add({
+                serviceUid: serviceUid
+            })
+
+        promises.push(users)
+
+        await Promise.all(promises)
+
+        return null
+
+    } catch (error) {
+        console.log(error)
+
+    }
+})
+
+export const saveUser = functions.https.onCall(async (data, context) => {
+
+    try {
+
+        return admin.firestore().doc(`users/${data.uid}`).set(data)
+
+    } catch (error) {
+        console.log(error);
+    }
+
+})

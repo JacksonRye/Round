@@ -51,7 +51,7 @@ class HomeViewModel @Inject constructor(
     fun getProviders(serviceId: String) {
         providersRepository.getListOfProviders(serviceId).addOnCompleteListener { task ->
             if (!task.isSuccessful) {
-                throw Exception("getProviders: ${task.exception}")
+                throw Exception("getProviders:", task.exception)
             }
 
             _serviceProviders.value = task.result

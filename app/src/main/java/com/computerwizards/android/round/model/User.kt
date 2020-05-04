@@ -19,7 +19,6 @@ data class User(
     )
 
     constructor(map: HashMap<*, *>) : this(
-
         uid = map["uid"] as String?,
         email = map["email"] as String?,
         instanceToken = map["instanceToken"] as String?,

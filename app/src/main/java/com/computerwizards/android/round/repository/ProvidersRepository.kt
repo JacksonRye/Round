@@ -7,13 +7,13 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class ProvidersRepository @Inject constructor(
-    val functions: FirebaseFunctions
+    private val functions: FirebaseFunctions
 ) {
 
-    fun getListOfProviders(serviceId: String): Task<List<User>> {
+    fun getListOfProviders(serviceUid: String): Task<List<User>> {
 
         val data = hashMapOf(
-            "serviceId" to serviceId
+            "serviceUid" to serviceUid
         )
 
         return functions

@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.RecyclerView
 import com.computerwizards.android.round.R
 import com.computerwizards.android.round.adapters.ProvidersAdapter
 import com.computerwizards.android.round.binding.FragmentDataBindingComponent
@@ -25,6 +26,8 @@ class ProvidersFragment : DaggerFragment() {
     private val viewModel by viewModels<HomeViewModel> { viewModelFactory }
 
     private val args by navArgs<ProvidersFragmentArgs>()
+
+    private lateinit var providersRecyclerView: RecyclerView
 
     private val dataBindingComponent by lazy {
         FragmentDataBindingComponent(requireContext())
@@ -44,9 +47,11 @@ class ProvidersFragment : DaggerFragment() {
             dataBindingComponent
         ).apply {
             lifecycleOwner = viewLifecycleOwner
+            viewModel = this@ProvidersFragment.viewModel
         }
 
-        servicesRecyclerView = binding.recyclerView
+
+        providersRecyclerView = binding.providerRecyclerView
 
         return binding.root
     }
@@ -66,14 +71,9 @@ class ProvidersFragment : DaggerFragment() {
 
         val providersAdapter = ProvidersAdapter(dataBindingComponent, null)
 
-        servicesRecyclerView.adapter = providersAdapter
+        providersRecyclerView.adapter = providersAdapter
 
         setupNavigation()
     }
-
-    companion object {
-        private const val TAG = "ProvidersFragment"
-    }
-
 
 }

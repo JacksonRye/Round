@@ -18,6 +18,7 @@ import com.computerwizards.android.round.model.User
 import com.computerwizards.android.round.model.WorkMedia
 import com.firebase.ui.storage.images.FirebaseImageLoader
 import com.google.firebase.storage.StorageReference
+import timber.log.Timber
 import java.io.InputStream
 import javax.inject.Inject
 
@@ -48,9 +49,10 @@ class FragmentBindingAdapters @Inject constructor(val context: Context) {
     @BindingAdapter("listData")
     fun bindProvidersRecyclerView(
         recyclerView: RecyclerView,
-        data: List<User>
+        data: List<User>?
     ) {
         val adapter = recyclerView.adapter as ProvidersAdapter
+        Timber.d("bindProviders: $data")
         adapter.submitList(data)
     }
 
