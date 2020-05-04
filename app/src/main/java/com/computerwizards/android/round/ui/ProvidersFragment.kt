@@ -4,23 +4,31 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.computerwizards.android.round.R
 import com.computerwizards.android.round.adapters.ProvidersAdapter
+import com.computerwizards.android.round.binding.FragmentDataBindingComponent
 import com.computerwizards.android.round.databinding.ListFragmentBinding
 import com.computerwizards.android.round.utils.EventObserver
+import dagger.android.support.DaggerFragment
 import javax.inject.Inject
 
-class ProvidersFragment : ListFragment() {
+class ProvidersFragment : DaggerFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    override val viewModel by viewModels<HomeViewModel> { viewModelFactory }
+    private val viewModel by viewModels<HomeViewModel> { viewModelFactory }
 
     private val args by navArgs<ProvidersFragmentArgs>()
+
+    private val dataBindingComponent by lazy {
+        FragmentDataBindingComponent(requireContext())
+    }
 
 
     override fun onCreateView(
@@ -28,13 +36,15 @@ class ProvidersFragment : ListFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding = ListFragmentBinding.inflate(
+        val binding = DataBindingUtil.inflate<ListFragmentBinding>(
             inflater,
+            R.layout.list_fragment,
             container,
-            false
-        )
-
-        this.binding = binding
+            false,
+            dataBindingComponent
+        ).apply {
+            lifecycleOwner = viewLifecycleOwner
+        }
 
         servicesRecyclerView = binding.recyclerView
 
@@ -52,12 +62,11 @@ class ProvidersFragment : ListFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        query = firestore.collection("services")
-            .document(args.serviceUid).collection("providers")
+        viewModel.getProviders(args.serviceUid)
 
+        val providersAdapter = ProvidersAdapter(dataBindingComponent, null)
 
-        adapter = object : ProvidersAdapter(query, viewModel) {}
-        servicesRecyclerView.adapter = adapter as ProvidersAdapter
+        servicesRecyclerView.adapter = providersAdapter
 
         setupNavigation()
     }

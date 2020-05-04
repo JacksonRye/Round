@@ -23,7 +23,7 @@ class MediaAdapter(
             dataBindingComponent
         )
         binding.root.setOnClickListener {
-            binding.media?.let {
+            binding.media.let {
                 mediaCallback?.invoke(it)
 
             }
@@ -42,7 +42,7 @@ class MediaAdapter(
         }
 
         override fun areContentsTheSame(oldItem: WorkMedia, newItem: WorkMedia): Boolean {
-            return oldItem.location == newItem.location
+            return oldItem == newItem
         }
     }
 

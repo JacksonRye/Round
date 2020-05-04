@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.computerwizards.android.round.model.Service
 import com.computerwizards.android.round.model.User
+import com.computerwizards.android.round.repository.ProvidersRepository
 import com.computerwizards.android.round.utils.Event
 import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.tasks.OnCompleteListener
@@ -14,13 +15,12 @@ import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.iid.FirebaseInstanceId
-import com.google.firebase.storage.FirebaseStorage
 import timber.log.Timber
 import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(
     private val firestore: FirebaseFirestore,
-    private val storage: FirebaseStorage
+    val providersRepository: ProvidersRepository
 ) : ViewModel(),
     Servicable {
 
@@ -48,6 +48,19 @@ class HomeViewModel @Inject constructor(
             })
     }
 
+    fun getProviders(serviceId: String) {
+        providersRepository.getListOfProviders(serviceId).addOnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                throw Exception("getProviders: ${task.exception}")
+            }
+
+            _serviceProviders.value = task.result
+        }
+    }
+
+
+    private val _serviceProviders = MutableLiveData<List<User>>()
+    val serviceProviders: LiveData<List<User>> = _serviceProviders
 
     lateinit var instanceId: String
 

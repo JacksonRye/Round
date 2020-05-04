@@ -2,63 +2,47 @@ package com.computerwizards.android.round.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.databinding.DataBindingComponent
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.DiffUtil
 import com.computerwizards.android.round.R
-import com.computerwizards.android.round.binding.FragmentDataBindingComponent
 import com.computerwizards.android.round.databinding.ItemUserBinding
 import com.computerwizards.android.round.model.User
-import com.computerwizards.android.round.ui.HomeViewModel
-import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.ktx.toObject
-import timber.log.Timber
 
-open class ProvidersAdapter(query: Query, private val viewModel: HomeViewModel) :
-    FireAdapter<ProvidersAdapter.ViewHolder>(query), ListAdapter {
+class ProvidersAdapter(
+    private val dataBindingComponent: DataBindingComponent,
+    private val providerCallback: ((User) -> Unit)?
+) : DataBoundListAdapter<User, ItemUserBinding>(DiffCallBack) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder.from(parent)
-    }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = getSnapshot(position).toObject<User>()
-
-        item?.let { user ->
-            holder.bind(user, viewModel)
-        }
-
-    }
-
-    class ViewHolder private constructor(val binding: ItemUserBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-
-        fun bind(user: User, viewModel: HomeViewModel) {
-            binding.viewModel = viewModel
-            binding.user = user
-            Timber.d("bind: $user")
-            binding.executePendingBindings()
-        }
-
-        companion object {
-            fun from(parent: ViewGroup): ViewHolder {
-                val dataBindingComponent = FragmentDataBindingComponent(parent.context)
-                val layoutInflater = LayoutInflater.from(parent.context)
-                val binding = DataBindingUtil.inflate<ItemUserBinding>(
-                    layoutInflater,
-                    R.layout.item_user,
-                    parent,
-                    false,
-                    dataBindingComponent
-                )
-
-                return ViewHolder(binding)
+    override fun createBinding(parent: ViewGroup): ItemUserBinding {
+        val binding = DataBindingUtil.inflate<ItemUserBinding>(
+            LayoutInflater.from(parent.context),
+            R.layout.item_user,
+            parent,
+            false,
+            dataBindingComponent
+        )
+        binding.root.setOnClickListener {
+            binding.user.let {
+                providerCallback?.invoke(it)
             }
-
         }
+        return binding
     }
 
-    companion object {
-        private const val TAG = "ProvidersAdapter"
+    override fun bind(binding: ItemUserBinding, item: User) {
+        binding.user = item
+    }
+
+    companion object DiffCallBack : DiffUtil.ItemCallback<User>() {
+        override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
+            return oldItem.uid == newItem.uid
+        }
+
+        override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
+            return oldItem == newItem
+        }
     }
 
 

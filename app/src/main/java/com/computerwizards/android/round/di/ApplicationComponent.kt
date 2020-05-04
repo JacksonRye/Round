@@ -15,7 +15,6 @@ import javax.inject.Singleton
         AndroidSupportInjectionModule::class,
         HomeModule::class,
         AddModule::class,
-        ListFragmentModule::class,
         ProvidersModule::class,
         ProfileModule::class,
         AddServiceModule::class,

@@ -13,6 +13,8 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
 import com.computerwizards.android.round.R
 import com.computerwizards.android.round.adapters.MediaAdapter
+import com.computerwizards.android.round.adapters.ProvidersAdapter
+import com.computerwizards.android.round.model.User
 import com.computerwizards.android.round.model.WorkMedia
 import com.firebase.ui.storage.images.FirebaseImageLoader
 import com.google.firebase.storage.StorageReference
@@ -40,6 +42,15 @@ class FragmentBindingAdapters @Inject constructor(val context: Context) {
         data: List<WorkMedia>?
     ) {
         val adapter = recyclerView.adapter as MediaAdapter
+        adapter.submitList(data)
+    }
+
+    @BindingAdapter("listData")
+    fun bindProvidersRecyclerView(
+        recyclerView: RecyclerView,
+        data: List<User>
+    ) {
+        val adapter = recyclerView.adapter as ProvidersAdapter
         adapter.submitList(data)
     }
 
