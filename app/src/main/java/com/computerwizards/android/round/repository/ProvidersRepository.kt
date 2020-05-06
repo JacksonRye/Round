@@ -26,6 +26,8 @@ class ProvidersRepository @Inject constructor(
 
                 val userList = task.result?.data as List<HashMap<*, *>>
 
+                Timber.d("userList: $userList")
+
                 val result = mutableListOf<User>()
 
                 userList.forEach { user ->

@@ -81,53 +81,66 @@ export const getProviders = functions.https.onCall(async (data, context) => {
     try {
         const serviceUid = data.serviceUid
 
-        const providerSnapshot = await admin.firestore().collection(`services/${serviceUid}/providers`).get()
+        const serviceSnapshot = await admin.firestore().collection(`services/${serviceUid}/providers`).get()
 
-        const providerDoc = providerSnapshot.docs.map(doc => doc.data())
+        const providersUid = serviceSnapshot.docs.map(doc => doc.data())
 
-        console.log("providerDoc", providerDoc);
+        console.log("providersUid", providersUid);
 
-        return providerDoc
+        const promises = []
+
+        providersUid.forEach(provider => {
+            const userData = admin.firestore().doc(`users/${provider.userUid}`).get().then(user => user.data())
+            promises.push(userData)
+        })
+
+        const users = await Promise.all(promises)
+
+        console.log("users", users);
+
+
+        return users
+
 
     } catch (error) {
-        console.log(error);
+        console.log(error)
     }
 
 })
 
-// Bug, Error with function
 
 export const addService = functions.https.onCall(async (data, context) => {
     try {
         const userUid = context.auth.uid
 
-        console.log("userUid", userUid);
+        console.log("userUid", userUid)
 
 
         const serviceUid = data.serviceUid
 
-        console.log("serviceUid", serviceUid);
+        console.log("serviceUid", serviceUid)
 
 
         const promises = []
 
         const services = admin.firestore()
-            .collection(`services/${serviceUid}/providers`).add({
+            .collection(`services/${serviceUid}/providers`).doc(`${userUid}`).set({
                 userUid: userUid
             })
 
         promises.push(services)
 
         const users = admin.firestore()
-            .collection(`users/${userUid}/services/`).add({
+            .collection(`users/${userUid}/services/`).doc(`${serviceUid}`).set({
                 serviceUid: serviceUid
             })
 
         promises.push(users)
 
-        await Promise.all(promises)
+        console.log("promises", Promise.all(promises))
 
-        return null
+
+        return Promise.all(promises)
 
     } catch (error) {
         console.log(error)
@@ -142,7 +155,7 @@ export const saveUser = functions.https.onCall(async (data, context) => {
         return admin.firestore().doc(`users/${data.uid}`).set(data)
 
     } catch (error) {
-        console.log(error);
+        console.log(error)
     }
 
 })
